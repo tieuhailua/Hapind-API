@@ -24,6 +24,7 @@ public class Admin implements java.io.Serializable {
 	private Integer id;
 	private String username;
 	private String password;
+	private String role;
 	private Set<Banned> banneds = new HashSet<Banned>(0);
 	private Set<Blog> blogs = new HashSet<Blog>(0);
 
@@ -35,11 +36,12 @@ public class Admin implements java.io.Serializable {
 		this.password = password;
 	}
 
-	public Admin(String username, String password, Set<Banned> banneds, Set<Blog> blogs) {
+	public Admin(String username, String password, Set<Banned> banneds, Set<Blog> blogs, String role) {
 		this.username = username;
 		this.password = password;
 		this.banneds = banneds;
 		this.blogs = blogs;
+		this.role = role;
 	}
 
 	@Id
@@ -89,5 +91,15 @@ public class Admin implements java.io.Serializable {
 	public void setBlogs(Set<Blog> blogs) {
 		this.blogs = blogs;
 	}
+	
+	@Column(name="role", nullable= false, length = 45)
+	public String getRole() {
+		return role;
+	}
 
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
+	
 }

@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public class DrinkingDTO {
-	
+	private Integer id;
 	@NotEmpty(message="Drinking Name can't be blank")
 	private String name;
 	
@@ -41,6 +41,14 @@ public class DrinkingDTO {
 
 	public void setUsers(Set<User> users) {
 		this.users = users;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	
 	

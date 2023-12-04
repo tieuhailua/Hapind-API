@@ -12,16 +12,19 @@ public class UserSingerDTO {
 	@NotNull(message = "User must be selected")
 	private User user;
 
+	private boolean choose;
+	
 	public UserSingerDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public UserSingerDTO(@NotNull(message = "Singer must be selected") Singer singer,
-			@NotNull(message = "User must be selected") User user) {
+			@NotNull(message = "User must be selected") User user, boolean choose) {
 		super();
 		this.singer = singer;
 		this.user = user;
+		this.choose = choose;
 	}
 
 	public Singer getSinger() {
@@ -46,6 +49,14 @@ public class UserSingerDTO {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public boolean isChoose() {
+		return choose;
+	}
+
+	public void setChoose(boolean choose) {
+		this.choose = choose;
 	}
 	
 	

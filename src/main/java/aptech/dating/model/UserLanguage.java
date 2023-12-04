@@ -24,13 +24,14 @@ public class UserLanguage implements java.io.Serializable {
 	private Integer id;
 	private Language language;
 	private User user;
-
+	private boolean choose;
 	public UserLanguage() {
 	}
 
-	public UserLanguage(Language language, User user) {
+	public UserLanguage(Language language, User user,boolean choose) {
 		this.language = language;
 		this.user = user;
+		this.choose = choose;
 	}
 
 	@Id
@@ -64,5 +65,15 @@ public class UserLanguage implements java.io.Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	@Column(name="choose")
+	public boolean isChoose() {
+		return choose;
+	}
+
+	public void setChoose(boolean choose) {
+		this.choose = choose;
+	}
+	
 
 }

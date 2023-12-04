@@ -11,17 +11,18 @@ public class UserMusicDTO {
 
 	@NotNull(message = "User must be selected")
 	private User user;
-
+	private boolean choose;
 	public UserMusicDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public UserMusicDTO(@NotNull(message = "Music must be selected") Music music,
-			@NotNull(message = "User must be selected") User user) {
+			@NotNull(message = "User must be selected") User user,boolean choose) {
 		super();
 		this.music = music;
 		this.user = user;
+		this.choose = choose;
 	}
 
 	public Music getMusic() {
@@ -46,6 +47,14 @@ public class UserMusicDTO {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public boolean isChoose() {
+		return choose;
+	}
+
+	public void setChoose(boolean choose) {
+		this.choose = choose;
 	}
 	
 }

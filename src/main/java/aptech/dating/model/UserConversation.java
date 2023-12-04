@@ -25,6 +25,7 @@ public class UserConversation implements java.io.Serializable {
 	private Conversation conversation;
 	private User user;
 	private String role;
+	
 
 	public UserConversation() {
 	}
@@ -33,6 +34,7 @@ public class UserConversation implements java.io.Serializable {
 		this.conversation = conversation;
 		this.user = user;
 		this.role = role;
+		
 	}
 
 	@Id
@@ -75,5 +77,7 @@ public class UserConversation implements java.io.Serializable {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	
+	
 
 }

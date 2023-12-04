@@ -11,17 +11,19 @@ public class UserExerciseDTO {
 	
 	@NotNull(message = "User must be selected")
 	private User user;
-
+	
+	private boolean choose;
 	public UserExerciseDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public UserExerciseDTO(@NotNull(message = "Exercise must be selected") Exercise exercise,
-			@NotNull(message = "User must be selected") User user) {
+			@NotNull(message = "User must be selected") User user, boolean choose) {
 		super();
 		this.exercise = exercise;
 		this.user = user;
+		this.choose = choose;
 	}
 
 	public Exercise getExercise() {
@@ -46,6 +48,14 @@ public class UserExerciseDTO {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public boolean isChoose() {
+		return choose;
+	}
+
+	public void setChoose(boolean choose) {
+		this.choose = choose;
 	}
 	
 	

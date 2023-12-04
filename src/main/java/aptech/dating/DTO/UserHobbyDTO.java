@@ -11,6 +11,7 @@ public class UserHobbyDTO {
 	
 	@NotNull(message = "User must be selected")
 	private User user;
+	private boolean choose;
 
 	public UserHobbyDTO() {
 		super();
@@ -18,10 +19,11 @@ public class UserHobbyDTO {
 	}
 
 	public UserHobbyDTO(@NotNull(message = "Hobby must be selected") Hobby hobby,
-			@NotNull(message = "User must be selected") User user) {
+			@NotNull(message = "User must be selected") User user, boolean choose) {
 		super();
 		this.hobby = hobby;
 		this.user = user;
+		this.choose = choose;
 	}
 
 	public Hobby getHobby() {
@@ -46,6 +48,14 @@ public class UserHobbyDTO {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public boolean isChoose() {
+		return choose;
+	}
+
+	public void setChoose(boolean choose) {
+		this.choose = choose;
 	}
 	
 	

@@ -24,13 +24,14 @@ public class UserHobby implements java.io.Serializable {
 	private Integer id;
 	private Hobby hobby;
 	private User user;
-
+	private boolean choose;
 	public UserHobby() {
 	}
 
-	public UserHobby(Hobby hobby, User user) {
+	public UserHobby(Hobby hobby, User user,boolean choose) {
 		this.hobby = hobby;
 		this.user = user;
+		this.choose = choose;
 	}
 
 	@Id
@@ -63,6 +64,15 @@ public class UserHobby implements java.io.Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	@Column(name="choose")
+	public boolean isChoose() {
+		return choose;
+	}
+
+	public void setChoose(boolean choose) {
+		this.choose = choose;
 	}
 
 }

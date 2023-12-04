@@ -24,13 +24,14 @@ public class UserSinger implements java.io.Serializable {
 	private Integer id;
 	private Singer singer;
 	private User user;
-
+	private boolean choose;
 	public UserSinger() {
 	}
 
-	public UserSinger(Singer singer, User user) {
+	public UserSinger(Singer singer, User user, boolean choose) {
 		this.singer = singer;
 		this.user = user;
+		this.choose = choose;
 	}
 
 	@Id
@@ -63,6 +64,15 @@ public class UserSinger implements java.io.Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	@Column(name="choose")
+	public boolean isChoose() {
+		return choose;
+	}
+
+	public void setChoose(boolean choose) {
+		this.choose = choose;
 	}
 
 }

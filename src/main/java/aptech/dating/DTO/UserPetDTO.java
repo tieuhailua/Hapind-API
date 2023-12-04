@@ -12,16 +12,18 @@ public class UserPetDTO {
 	@NotNull(message = "User must be selected")
 	private User user;
 
+	private boolean choose;
 	public UserPetDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public UserPetDTO(@NotNull(message = "Pet must be selected") Pet pet,
-			@NotNull(message = "User must be selected") User user) {
+			@NotNull(message = "User must be selected") User user, boolean choose) {
 		super();
 		this.pet = pet;
 		this.user = user;
+		this.choose = choose;
 	}
 
 	public Pet getPet() {
@@ -46,6 +48,14 @@ public class UserPetDTO {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public boolean isChoose() {
+		return choose;
+	}
+
+	public void setChoose(boolean choose) {
+		this.choose = choose;
 	}
 	
 

@@ -24,13 +24,15 @@ public class UserPet implements java.io.Serializable {
 	private Integer id;
 	private Pet pet;
 	private User user;
-
+	private boolean choose;
+	
 	public UserPet() {
 	}
 
-	public UserPet(Pet pet, User user) {
+	public UserPet(Pet pet, User user, boolean choose) {
 		this.pet = pet;
 		this.user = user;
+		this.choose = choose;
 	}
 
 	@Id
@@ -63,6 +65,15 @@ public class UserPet implements java.io.Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	@Column(name="choose")
+	public boolean isChoose() {
+		return choose;
+	}
+
+	public void setChoose(boolean choose) {
+		this.choose = choose;
 	}
 
 }

@@ -12,16 +12,18 @@ public class UserExpectingDTO {
 	@NotNull(message = "User must be selected")
 	private User user;
 
+	private boolean choose;
 	public UserExpectingDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public UserExpectingDTO(@NotNull(message = "Expecting must be selected") Expecting expecting,
-			@NotNull(message = "User must be selected") User user) {
+			@NotNull(message = "User must be selected") User user, boolean choose) {
 		super();
 		this.expecting = expecting;
 		this.user = user;
+		this.choose = choose;
 	}
 
 	public Expecting getExpecting() {
@@ -47,6 +49,12 @@ public class UserExpectingDTO {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
-	
+
+	public boolean isChoose() {
+		return choose;
+	}
+
+	public void setChoose(boolean choose) {
+		this.choose = choose;
+	}
 }

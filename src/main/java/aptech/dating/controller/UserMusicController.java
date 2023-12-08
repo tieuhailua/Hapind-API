@@ -51,8 +51,16 @@ public class UserMusicController {
 
 		return ResponseEntity.ok(userMusicDTO);
 	}
-
 	@GetMapping("/{id}")
+	public ResponseEntity<List<UserMusicDTO>> getUserMusicsByUserId(int id) {
+		List<UserMusic> userMusic = userMusicService.getUserMusicsByUserId(id);
+
+		List<UserMusicDTO> userMusicDTO = userMusic.stream().map(element -> modelMapper.map(element, UserMusicDTO.class))
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok(userMusicDTO);
+	}
+	@GetMapping("music/{id}")
 	public ResponseEntity<UserMusicDTO> getUserMusicById(@PathVariable int id) {
 		Optional<UserMusic> userMusic = userMusicService.getUserMusicById(id);
 

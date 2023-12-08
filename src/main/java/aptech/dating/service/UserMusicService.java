@@ -27,7 +27,11 @@ public class UserMusicService {
     public List<UserMusic> getAllUserMusics() {
         return userMusicRepository.findAll();
     }
-
+    
+    public List<UserMusic> getUserMusicsByUserId(int userId) {
+        return userMusicRepository.findAllByUserId(userId);
+    }
+    
     public Optional<UserMusic> getUserMusicById(int id) {
         return userMusicRepository.findById(id);
     }

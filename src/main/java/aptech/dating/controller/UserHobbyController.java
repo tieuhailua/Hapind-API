@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import aptech.dating.DTO.FamilyDTO;
 import aptech.dating.DTO.UserHobbyDTO;
+import aptech.dating.DTO.UserMusicDTO;
 import aptech.dating.model.Admin;
 import aptech.dating.model.Banned;
 import aptech.dating.model.Family;
 import aptech.dating.model.UserHobby;
+import aptech.dating.model.UserMusic;
 import aptech.dating.service.UserHobbyService;
 
 @RestController
@@ -60,6 +62,16 @@ public class UserHobbyController {
 		return userHobbyDTO!=null?ResponseEntity.ok(userHobbyDTO):ResponseEntity.notFound().build();
 	}
 
+	@GetMapping("/hobby/{id}")
+	public ResponseEntity<List<UserHobbyDTO>> getUserHobbiesByUserId(@PathVariable int id) {
+		List<UserHobby> userHobby = userHobbyService.getUserHobbiesByUserId(id);
+
+		List<UserHobbyDTO> userHobbyDTO = userHobby.stream().map(element -> modelMapper.map(element, UserHobbyDTO.class))
+				.collect(Collectors.toList());
+		
+		return ResponseEntity.ok(userHobbyDTO);
+	}
+	
 	@PostMapping
 	public ResponseEntity<UserHobby> createUserHobby(@RequestBody @Validated UserHobbyDTO userHobbyDTO) {
 		UserHobby userHobby = modelMapper.map(userHobbyDTO, UserHobby.class);

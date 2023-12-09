@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.UserExpectingDTO;
 import aptech.dating.model.UserExpecting;
+import aptech.dating.model.UserMusic;
 import aptech.dating.repository.UserExpectingRepository;
 
 @Service
@@ -30,6 +31,10 @@ public class UserExpectingService {
 
     public Optional<UserExpecting> getUserExpectingById(int id) {
         return userExpectingRepository.findById(id);
+    }
+    
+    public List<UserExpecting> getUserExpectingsByUserId(int userId) {
+        return userExpectingRepository.findAllByUserId(userId);
     }
 
     public UserExpecting saveUserExpecting(UserExpecting userExpecting) {

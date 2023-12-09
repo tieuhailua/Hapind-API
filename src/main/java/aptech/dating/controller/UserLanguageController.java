@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import aptech.dating.DTO.FamilyDTO;
 import aptech.dating.DTO.UserLanguageDTO;
+import aptech.dating.DTO.UserMusicDTO;
 import aptech.dating.model.Admin;
 import aptech.dating.model.Banned;
 import aptech.dating.model.Family;
 import aptech.dating.model.UserLanguage;
+import aptech.dating.model.UserMusic;
 import aptech.dating.service.UserLanguageService;
 
 @RestController
@@ -58,6 +60,16 @@ public class UserLanguageController {
 		UserLanguageDTO userLanguageDTO = modelMapper.map(userLanguage, UserLanguageDTO.class);
 		
 		return userLanguageDTO!=null?ResponseEntity.ok(userLanguageDTO):ResponseEntity.notFound().build();
+	}
+	
+	@GetMapping("/language/{id}")
+	public ResponseEntity<List<UserLanguageDTO>> getUserLanguagesByUserId(@PathVariable int id) {
+		List<UserLanguage> userLanguage = userLanguageService.getUserLanguagesByUserId(id);
+
+		List<UserLanguageDTO> userLanguageDTO = userLanguage.stream().map(element -> modelMapper.map(element, UserLanguageDTO.class))
+				.collect(Collectors.toList());
+		
+		return ResponseEntity.ok(userLanguageDTO);
 	}
 
 	@PostMapping

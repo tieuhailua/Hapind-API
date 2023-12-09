@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import aptech.dating.DTO.FamilyDTO;
+import aptech.dating.DTO.UserMusicDTO;
 import aptech.dating.DTO.UserSingerDTO;
 import aptech.dating.model.Admin;
 import aptech.dating.model.Banned;
 import aptech.dating.model.Family;
+import aptech.dating.model.UserMusic;
 import aptech.dating.model.UserSinger;
 import aptech.dating.service.UserSingerService;
 
@@ -59,7 +61,17 @@ public class UserSingerController {
 		
 		return userSingerDTO!=null?ResponseEntity.ok(userSingerDTO):ResponseEntity.notFound().build();
 	}
+	
+	@GetMapping("/singer/{id}")
+	public ResponseEntity<List<UserSingerDTO>> getUserSingersByUserId(@PathVariable int id) {
+		List<UserSinger> userSinger = userSingerService.getUserSingersByUserId(id);
 
+		List<UserSingerDTO> userSingerDTO = userSinger.stream().map(element -> modelMapper.map(element, UserSingerDTO.class))
+				.collect(Collectors.toList());
+		
+		return ResponseEntity.ok(userSingerDTO);
+	}
+	
 	@PostMapping
 	public ResponseEntity<UserSinger> createUserSinger(@RequestBody @Validated UserSingerDTO userSingerDTO) {
 		UserSinger userSinger = modelMapper.map(userSingerDTO, UserSinger.class);

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.UserPetDTO;
+import aptech.dating.model.UserMusic;
 import aptech.dating.model.UserPet;
 import aptech.dating.repository.UserPetRepository;
 
@@ -26,6 +27,10 @@ public class UserPetService {
 
     public List<UserPet> getAllUserPets() {
         return userPetRepository.findAll();
+    }
+    
+    public List<UserPet> getUserPetsByUserId(int userId) {
+        return userPetRepository.findAllByUserId(userId);
     }
 
     public Optional<UserPet> getUserPetById(int id) {

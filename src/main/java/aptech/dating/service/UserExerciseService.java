@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.UserExerciseDTO;
 import aptech.dating.model.UserExercise;
+import aptech.dating.model.UserMusic;
 import aptech.dating.repository.UserExerciseRepository;
 
 @Service
@@ -30,6 +31,10 @@ public class UserExerciseService {
 
     public Optional<UserExercise> getUserExerciseById(int id) {
         return userExerciseRepository.findById(id);
+    }
+    
+    public List<UserExercise> getUserExerciesByUserId(int userId) {
+        return userExerciseRepository.findAllByUserId(userId);
     }
 
     public UserExercise saveUserExercise(UserExercise userExercise) {

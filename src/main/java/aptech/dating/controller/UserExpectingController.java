@@ -21,10 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 import aptech.dating.DTO.FamilyDTO;
 import aptech.dating.DTO.UserExerciseDTO;
 import aptech.dating.DTO.UserExpectingDTO;
+import aptech.dating.DTO.UserMusicDTO;
 import aptech.dating.model.Admin;
 import aptech.dating.model.Banned;
 import aptech.dating.model.Family;
 import aptech.dating.model.UserExpecting;
+import aptech.dating.model.UserMusic;
 import aptech.dating.service.UserExpectingService;
 
 @RestController
@@ -60,7 +62,16 @@ public class UserExpectingController {
 		
 		return userExpectingDTO!=null?ResponseEntity.ok(userExpectingDTO):ResponseEntity.notFound().build();
 	}
+	
+	@GetMapping("/expecting/{id}")
+	public ResponseEntity<List<UserExpectingDTO>> getUserExpectingsByUserId(@PathVariable int id) {
+		List<UserExpecting> userExpecting = userExpectingService.getUserExpectingsByUserId(id);
 
+		List<UserExpectingDTO> userExpectingDTO = userExpecting.stream().map(element -> modelMapper.map(element, UserExpectingDTO.class))
+				.collect(Collectors.toList());
+		
+		return ResponseEntity.ok(userExpectingDTO);
+	}
 	@PostMapping
 	public ResponseEntity<UserExpecting> createUserExpecting(@RequestBody @Validated UserExerciseDTO userExerciseDTO) {
 		UserExpecting userExpecting = modelMapper.map(userExerciseDTO, UserExpecting.class);

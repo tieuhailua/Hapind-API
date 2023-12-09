@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import aptech.dating.DTO.FamilyDTO;
 import aptech.dating.DTO.UserExerciseDTO;
+import aptech.dating.DTO.UserMusicDTO;
 import aptech.dating.model.Admin;
 import aptech.dating.model.Banned;
 import aptech.dating.model.Family;
 import aptech.dating.model.UserExercise;
+import aptech.dating.model.UserMusic;
 import aptech.dating.service.UserExerciseService;
 
 @RestController
@@ -58,6 +60,16 @@ public class UserExerciseController {
 		UserExerciseDTO userExerciseDTO = modelMapper.map(userExercise, UserExerciseDTO.class);
 		
 		return userExerciseDTO!=null?ResponseEntity.ok(userExerciseDTO):ResponseEntity.notFound().build();
+	}
+	
+	@GetMapping("/exercise/{id}")
+	public ResponseEntity<List<UserExerciseDTO>> getUserExercisesByUserId(@PathVariable int id) {
+		List<UserExercise> userExercise = userExerciseService.getUserExerciesByUserId(id);
+
+		List<UserExerciseDTO> userExerciseDTO = userExercise.stream().map(element -> modelMapper.map(element, UserExerciseDTO.class))
+				.collect(Collectors.toList());
+		
+		return ResponseEntity.ok(userExerciseDTO);
 	}
 
 	@PostMapping

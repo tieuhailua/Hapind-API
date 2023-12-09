@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import aptech.dating.DTO.FamilyDTO;
+import aptech.dating.DTO.UserMusicDTO;
 import aptech.dating.DTO.UserPetDTO;
 import aptech.dating.model.Admin;
 import aptech.dating.model.Banned;
 import aptech.dating.model.Family;
+import aptech.dating.model.UserMusic;
 import aptech.dating.model.UserPet;
 import aptech.dating.service.UserPetService;
 import jakarta.validation.Valid;
@@ -61,6 +63,16 @@ public class UserPetController {
 		return userPetDTO!=null?ResponseEntity.ok(userPetDTO):ResponseEntity.notFound().build();
 	}
 
+	@GetMapping("/pet/{id}")
+	public ResponseEntity<List<UserPetDTO>> getUserPetsByUserId(@PathVariable int id) {
+		List<UserPet> userPet = userPetService.getUserPetsByUserId(id);
+
+		List<UserPetDTO> userPetDTO = userPet.stream().map(element -> modelMapper.map(element, UserPetDTO.class))
+				.collect(Collectors.toList());
+		
+		return ResponseEntity.ok(userPetDTO);
+	}
+	
 	@PostMapping
 	public ResponseEntity<UserPet> createUserPet(@RequestBody @Validated UserPetDTO userPetDTO) {
 		UserPet userPet = modelMapper.map(userPetDTO, UserPet.class);

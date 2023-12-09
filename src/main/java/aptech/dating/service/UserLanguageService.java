@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.UserLanguageDTO;
 import aptech.dating.model.UserLanguage;
+import aptech.dating.model.UserMusic;
 import aptech.dating.repository.UserLanguageRepository;
 
 @Service
@@ -26,6 +27,10 @@ public class UserLanguageService {
 
     public List<UserLanguage> getAllUserLanguages() {
         return userLanguageRepository.findAll();
+    }
+    
+    public List<UserLanguage> getUserLanguagesByUserId(int userId) {
+        return userLanguageRepository.findAllByUserId(userId);
     }
 
     public Optional<UserLanguage> getUserLanguageById(int id) {

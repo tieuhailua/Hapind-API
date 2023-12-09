@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.UserHobbyDTO;
 import aptech.dating.model.UserHobby;
+import aptech.dating.model.UserMusic;
 import aptech.dating.repository.UserHobbyRepository;
 
 @Service
@@ -28,6 +29,10 @@ public class UserHobbyService {
         return userHobbyRepository.findAll();
     }
 
+    public List<UserHobby> getUserHobbiesByUserId(int userId) {
+        return userHobbyRepository.findAllByUserId(userId);
+    }
+    
     public Optional<UserHobby> getUserHobbyById(int id) {
         return userHobbyRepository.findById(id);
     }

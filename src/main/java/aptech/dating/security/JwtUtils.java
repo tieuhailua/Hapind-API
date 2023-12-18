@@ -42,6 +42,7 @@ public class JwtUtils {
 		AdminDetailsImpl userPrincipal = (AdminDetailsImpl) authentication.getPrincipal();
 		AdminDTO amdin = adminService.getAdmin(userPrincipal.getId());
 		return Jwts.builder().setClaims(claimsMap(amdin)).setSubject(userPrincipal.getUsername())
+				.setAudience(amdin.getRole())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + this.getExpirationMs()))
 				// .signWith(SignatureAlgorithm.HS512, this.getSecret().getBytes(UTF_8))

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class LiteracyController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<LiteracyDTO>> getAllLiteracys() {
 		List<Literacy> literacy = literacyService.getAllLiteracys();
 
@@ -52,6 +54,7 @@ public class LiteracyController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<LiteracyDTO> getLiteracyById(@PathVariable int id) {
 		Optional<Literacy> literacy = literacyService.getLiteracyById(id);
 
@@ -61,12 +64,14 @@ public class LiteracyController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Literacy> createLiteracy(@RequestBody @Validated LiteracyDTO literacyDTO) {
 		Literacy literacy = modelMapper.map(literacyDTO, Literacy.class);
 		return ResponseEntity.ok(literacyService.saveLiteracy(literacy));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Literacy> updateLiteracy(@PathVariable int id, @RequestBody @Validated LiteracyDTO literacyDTO) {
 		Optional<Literacy> literacy = literacyService.getLiteracyById(id);
 
@@ -85,6 +90,7 @@ public class LiteracyController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteLiteracy(@PathVariable int id) {
 		literacyService.deleteLiteracy(id);
 		return ResponseEntity.ok().build();

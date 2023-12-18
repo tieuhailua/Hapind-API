@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,6 +44,7 @@ public class LanguageController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<LanguageDTO>> getAllLanguages() {
 		List<Language> language = languageService.getAllLanguages();
 
@@ -53,6 +55,7 @@ public class LanguageController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<LanguageDTO> getLanguageById(@PathVariable int id) {
 		Optional<Language> language = languageService.getLanguageById(id);
 
@@ -62,12 +65,14 @@ public class LanguageController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Language> createLanguage(@RequestBody @Validated LanguageDTO languageDTO) {
 		Language language = modelMapper.map(languageDTO,Language.class);
 		return ResponseEntity.ok(languageService.saveLanguage(language));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Language> updateLanguage(@PathVariable int id, @RequestBody @Validated LanguageDTO languageDTO) {
 		Optional<Language> language = languageService.getLanguageById(id);
 
@@ -86,6 +91,7 @@ public class LanguageController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteLanguage(@PathVariable int id) {
 		languageService.deleteLanguage(id);
 		return ResponseEntity.ok().build();

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class ReportController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<ReportDTO>> getAllReports() {
 		List<Report> report = reportService.getAllReports();
 
@@ -52,6 +54,7 @@ public class ReportController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<ReportDTO> getReportById(@PathVariable int id) {
 		Optional<Report> report = reportService.getReportById(id);
 
@@ -61,12 +64,14 @@ public class ReportController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Report> createReport(@RequestBody @Validated ReportDTO reportDTO) {
 		Report report = modelMapper.map(reportDTO, Report.class);
 		return ResponseEntity.ok(reportService.saveReport(report));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Report> updateReport(@PathVariable int id, @RequestBody @Validated ReportDTO reportDTO) {
 		Optional<Report> report = reportService.getReportById(id);
 
@@ -85,6 +90,7 @@ public class ReportController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteReport(@PathVariable int id) {
 		reportService.deleteReport(id);
 		return ResponseEntity.ok().build();

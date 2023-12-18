@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,6 +42,7 @@ public class ConversationController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<ConversationDTO>> getAllConversations() {
 		List<Conversation> conversation = conversationService.getAllConversations();
 
@@ -51,6 +53,7 @@ public class ConversationController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<ConversationDTO> getConversationById(@PathVariable int id) {
 		Optional<Conversation> conversation = conversationService.getConversationById(id);
 
@@ -60,12 +63,14 @@ public class ConversationController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Conversation> createConversation(@RequestBody @Validated ConversationDTO conversationDTO) {
 		Conversation conversation = modelMapper.map(conversationDTO, Conversation.class);
 		return ResponseEntity.ok(conversationService.saveConversation(conversation));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Conversation> updateConversation(@PathVariable int id, @RequestBody @Validated ConversationDTO conversationDTO) {
 		Optional<Conversation> conversation = conversationService.getConversationById(id);
 
@@ -84,6 +89,7 @@ public class ConversationController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteConversation(@PathVariable int id) {
 		conversationService.deleteConversation(id);
 		return ResponseEntity.ok().build();

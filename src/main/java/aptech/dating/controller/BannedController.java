@@ -52,6 +52,7 @@ public class BannedController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<BannedDTO>> getAllBanneds() {
 		List<Banned> banned = bannedService.getAllBanneds();
 
@@ -62,6 +63,7 @@ public class BannedController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<BannedDTO> getBannedById(@PathVariable int id) {
 		Optional<Banned> banned = bannedService.getBannedById(id);
 
@@ -90,6 +92,7 @@ public class BannedController {
 //	}
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Banned> updateBanned(@PathVariable int id, @RequestBody @Validated BannedDTO bannedDTO) {
 		Optional<Banned> banned = bannedService.getBannedById(id);
 
@@ -113,7 +116,8 @@ public class BannedController {
 		return ResponseEntity.ok().build();
 	}
 	
-	@GetMapping("/get/{id}") 
+	@GetMapping("/get/{id}")
+	@PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<BannedDTO> getBanned(@PathVariable("id") int id){ 
         BannedDTO bannedDto = this.bannedService.getBanned(id); 
         return new ResponseEntity<BannedDTO>(bannedDto, HttpStatus.OK); 

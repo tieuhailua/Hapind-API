@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,6 +42,7 @@ public class HobbyController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<HobbyDTO>> getAllHobbys() {
 		List<Hobby> hobby = hobbyService.getAllHobbys();
 
@@ -51,6 +53,7 @@ public class HobbyController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<HobbyDTO> getHobbyById(@PathVariable int id) {
 		Optional<Hobby> hobby = hobbyService.getHobbyById(id);
 
@@ -60,12 +63,14 @@ public class HobbyController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Hobby> createHobby(@RequestBody @Validated HobbyDTO hobbyDTO) {
 		Hobby hobby = modelMapper.map(hobbyDTO, Hobby.class);
 		return ResponseEntity.ok(hobbyService.saveHobby(hobby));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Hobby> updateHobby(@PathVariable int id, @RequestBody @Validated HobbyDTO hobbyDTO) {
 		Optional<Hobby> hobby = hobbyService.getHobbyById(id);
 
@@ -84,6 +89,7 @@ public class HobbyController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteHobby(@PathVariable int id) {
 		hobbyService.deleteHobby(id);
 		return ResponseEntity.ok().build();

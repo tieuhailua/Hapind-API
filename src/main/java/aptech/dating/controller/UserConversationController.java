@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class UserConversationController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserConversationDTO>> getAllUserConversations() {
 		List<UserConversation> userConversation = userConversationService.getAllUserConversations();
 
@@ -52,6 +54,7 @@ public class UserConversationController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserConversationDTO> getUserConversationById(@PathVariable int id) {
 		Optional<UserConversation> userConversation = userConversationService.getUserConversationById(id);
 
@@ -61,12 +64,14 @@ public class UserConversationController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserConversation> createUserConversation(@RequestBody @Validated UserConversationDTO userConversationDTO) {
 		UserConversation userConversation = modelMapper.map(userConversationDTO, UserConversation.class);
 		return ResponseEntity.ok(userConversationService.saveUserConversation(userConversation));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserConversation> updateUserConversation(@PathVariable int id, @RequestBody @Validated UserConversationDTO userConversationDTO) {
 		Optional<UserConversation> userConversation = userConversationService.getUserConversationById(id);
 
@@ -85,6 +90,7 @@ public class UserConversationController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteUserConversation(@PathVariable int id) {
 		userConversationService.deleteUserConversation(id);
 		return ResponseEntity.ok().build();

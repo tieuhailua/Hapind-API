@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class UserImageController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserImageDTO>> getAllUserImages() {
 		List<UserImage> userImage = userImageService.getAllUserImages();
 
@@ -52,6 +54,7 @@ public class UserImageController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserImageDTO> getUserImageById(@PathVariable int id) {
 		Optional<UserImage> userImage = userImageService.getUserImageById(id);
 
@@ -61,12 +64,14 @@ public class UserImageController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserImage> createUserImage(@RequestBody @Validated UserImageDTO userImageDTO) {
 		UserImage userImage = modelMapper.map(userImageDTO, UserImage.class);
 		return ResponseEntity.ok(userImageService.saveUserImage(userImage));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserImage> updateUserImage(@PathVariable int id, @RequestBody @Validated UserImageDTO userImageDTO) {
 		Optional<UserImage> userImage = userImageService.getUserImageById(id);
 
@@ -85,6 +90,7 @@ public class UserImageController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteUserImage(@PathVariable int id) {
 		userImageService.deleteUserImage(id);
 		return ResponseEntity.ok().build();

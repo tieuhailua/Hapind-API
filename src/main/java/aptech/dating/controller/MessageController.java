@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class MessageController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<MessageDTO>> getAllMessages() {
 		List<Message> message = messageService.getAllMessages();
 
@@ -52,6 +54,7 @@ public class MessageController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<MessageDTO> getMessageById(@PathVariable int id) {
 		Optional<Message> message = messageService.getMessageById(id);
 
@@ -61,12 +64,14 @@ public class MessageController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Message> createMessage(@RequestBody @Validated MessageDTO messageDTO) {
 		Message message = modelMapper.map(messageDTO, Message.class);
 		return ResponseEntity.ok(messageService.saveMessage(message));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Message> updateMessage(@PathVariable int id, @RequestBody @Validated MessageDTO messageDTO) {
 		Optional<Message> message = messageService.getMessageById(id);
 
@@ -85,6 +90,7 @@ public class MessageController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteMessage(@PathVariable int id) {
 		messageService.deleteMessage(id);
 		return ResponseEntity.ok().build();

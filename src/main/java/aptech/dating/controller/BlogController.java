@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,6 +44,7 @@ public class BlogController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<BlogDTO>> getAllBlogs() {
 		List<Blog> blog = blogService.getAllBlogs();
 
@@ -53,6 +55,7 @@ public class BlogController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<BlogDTO> getBlogById(@PathVariable int id) {
 		Optional<Blog> blog = blogService.getBlogById(id);
 
@@ -62,12 +65,14 @@ public class BlogController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Blog> createBlogImage(@RequestBody @Validated BlogDTO blogDTO) {
 		Blog blog = modelMapper.map(blogDTO, Blog.class);
 		return ResponseEntity.ok(blogService.saveBlog(blog));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Blog> updateBlog(@PathVariable int id, @RequestBody @Validated BlogDTO blogDTO) {
 		Optional<Blog> blog = blogService.getBlogById(id);
 
@@ -86,12 +91,14 @@ public class BlogController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteBlog(@PathVariable int id) {
 		blogService.deleteBlog(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@GetMapping("/get/{id}") 
+	@PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<BlogDTO> getBlog(@PathVariable("id") int id){ 
         blogService.deleteBlog(id);
         return ResponseEntity.ok().build();

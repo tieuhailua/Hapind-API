@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,6 +46,7 @@ public class UserPetController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserPetDTO>> getAllUserPets() {
 		List<UserPet> userPet = userPetService.getAllUserPets();
 
@@ -55,6 +57,7 @@ public class UserPetController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserPetDTO> getUserPetById(@PathVariable int id) {
 		Optional<UserPet> userPet = userPetService.getUserPetById(id);
 
@@ -64,6 +67,7 @@ public class UserPetController {
 	}
 
 	@GetMapping("/pet/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserPetDTO>> getUserPetsByUserId(@PathVariable int id) {
 		List<UserPet> userPet = userPetService.getUserPetsByUserId(id);
 
@@ -74,12 +78,14 @@ public class UserPetController {
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserPet> createUserPet(@RequestBody @Validated UserPetDTO userPetDTO) {
 		UserPet userPet = modelMapper.map(userPetDTO, UserPet.class);
 		return ResponseEntity.ok(userPetService.saveUserPet(userPet));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserPet> updateUserPet(@PathVariable int id, @RequestBody @Validated UserPetDTO userPetDTO) {
 		Optional<UserPet> userPet = userPetService.getUserPetById(id);
 
@@ -98,6 +104,7 @@ public class UserPetController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteUserPet(@PathVariable int id) {
 		userPetService.deleteUserPet(id);
 		return ResponseEntity.ok().build();

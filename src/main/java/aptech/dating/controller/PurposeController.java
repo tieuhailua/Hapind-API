@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class PurposeController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<PurposeDTO>> getAllPurposes() {
 		List<Purpose> purpose = purposeService.getAllPurposes();
 
@@ -52,6 +54,7 @@ public class PurposeController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<PurposeDTO> getPurposeById(@PathVariable int id) {
 		Optional<Purpose> purpose = purposeService.getPurposeById(id);
 
@@ -61,12 +64,14 @@ public class PurposeController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Purpose> createPurpose(@RequestBody @Validated PurposeDTO purposeDTO) {
 		Purpose purpose = modelMapper.map(purposeDTO, Purpose.class);
 		return ResponseEntity.ok(purposeService.savePurpose(purpose));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Purpose> updatePurpose(@PathVariable int id, @RequestBody @Validated PurposeDTO purposeDTO) {
 		Optional<Purpose> purpose = purposeService.getPurposeById(id);
 
@@ -85,6 +90,7 @@ public class PurposeController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deletePurpose(@PathVariable int id) {
 		purposeService.deletePurpose(id);
 		return ResponseEntity.ok().build();

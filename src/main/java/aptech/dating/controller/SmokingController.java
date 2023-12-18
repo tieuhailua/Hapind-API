@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class SmokingController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<SmokingDTO>> getAllSmokings() {
 		List<Smoking> smoking = smokingService.getAllSmokings();
 
@@ -52,6 +54,7 @@ public class SmokingController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<SmokingDTO> getSmokingById(@PathVariable int id) {
 		Optional<Smoking> smoking = smokingService.getSmokingById(id);
 
@@ -61,12 +64,14 @@ public class SmokingController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Smoking> createSmoking(@RequestBody @Validated SmokingDTO smokingDTO) {
 		Smoking smoking = modelMapper.map(smokingDTO, Smoking.class);
 		return ResponseEntity.ok(smokingService.saveSmoking(smoking));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Smoking> updateSmoking(@PathVariable int id, @RequestBody @Validated SmokingDTO smokingDTO) {
 		Optional<Smoking> smoking = smokingService.getSmokingById(id);
 
@@ -85,6 +90,7 @@ public class SmokingController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteSmoking(@PathVariable int id) {
 		smokingService.deleteSmoking(id);
 		return ResponseEntity.ok().build();

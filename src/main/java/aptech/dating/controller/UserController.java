@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class UserController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserDTO>> getAllUsers() {
 		List<User> user = userService.getAllUsers();
 
@@ -52,6 +54,7 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
 		Optional<User> user = userService.getUserById(id);
 
@@ -61,12 +64,14 @@ public class UserController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<User> createUser(@RequestBody @Validated UserDTO userDTO) {
 		User user = modelMapper.map(userDTO, User.class);
 		return ResponseEntity.ok(userService.saveUser(user));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody @Validated UserDTO userDTO) {
 		Optional<User> user = userService.getUserById(id);
 
@@ -85,6 +90,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteUser(@PathVariable int id) {
 		userService.deleteUser(id);
 		return ResponseEntity.ok().build();

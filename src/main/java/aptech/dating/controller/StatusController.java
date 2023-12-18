@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class StatusController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<StatusDTO>> getAllStatuss() {
 		List<Status> status = statusService.getAllStatuss();
 
@@ -52,6 +54,7 @@ public class StatusController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<StatusDTO> getStatusById(@PathVariable int id) {
 		Optional<Status> status = statusService.getStatusById(id);
 
@@ -61,12 +64,14 @@ public class StatusController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Status> createStatus(@RequestBody @Validated StatusDTO statusDTO) {
 		Status status = modelMapper.map(statusDTO, Status.class);
 		return ResponseEntity.ok(statusService.saveStatus(status));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Status> updateStatus(@PathVariable int id, @RequestBody @Validated StatusDTO statusDTO) {
 		Optional<Status> status = statusService.getStatusById(id);
 
@@ -85,6 +90,7 @@ public class StatusController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteStatus(@PathVariable int id) {
 		statusService.deleteStatus(id);
 		return ResponseEntity.ok().build();

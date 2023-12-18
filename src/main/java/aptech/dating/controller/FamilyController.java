@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,6 +41,7 @@ public class FamilyController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<List<FamilyDTO>> getAllFamilys() {
 	List<Family> family = familyService.getAllFamilys();
 
@@ -52,6 +54,7 @@ public class FamilyController {
     
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<FamilyDTO> getFamilyById(@PathVariable int id) {
 	Optional<Family> family = familyService.getFamilyById(id);
 
@@ -61,12 +64,14 @@ public class FamilyController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Family> createFamily(@RequestBody @Validated FamilyDTO familyDTO) {
 	Family family = modelMapper.map(familyDTO, Family.class);
 	return ResponseEntity.ok(familyService.saveFamily(family));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Family> updateFamily(@PathVariable int id, @RequestBody @Validated FamilyDTO familyDTO) {
 	Optional<Family> family = familyService.getFamilyById(id);
 
@@ -82,6 +87,7 @@ public class FamilyController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Void> deleteFamily(@PathVariable int id) {
 	familyService.deleteFamily(id);
 	return ResponseEntity.ok().build();

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,6 +45,7 @@ public class UserLanguageController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserLanguageDTO>> getAllUserLanguages() {
 		List<UserLanguage> userLanguage = userLanguageService.getAllUserLanguages();
 
@@ -54,6 +56,7 @@ public class UserLanguageController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserLanguageDTO> getUserLanguageById(@PathVariable int id) {
 		Optional<UserLanguage> userLanguage = userLanguageService.getUserLanguageById(id);
 
@@ -63,6 +66,7 @@ public class UserLanguageController {
 	}
 	
 	@GetMapping("/language/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserLanguageDTO>> getUserLanguagesByUserId(@PathVariable int id) {
 		List<UserLanguage> userLanguage = userLanguageService.getUserLanguagesByUserId(id);
 
@@ -73,12 +77,14 @@ public class UserLanguageController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserLanguage> createUserLanguage(@RequestBody @Validated UserLanguageDTO userLanguageDTO) {
 		UserLanguage userLanguage = modelMapper.map(userLanguageDTO, UserLanguage.class);
 		return ResponseEntity.ok(userLanguageService.saveUserLanguage(userLanguage));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserLanguage> updateUserLanguage(@PathVariable int id, @RequestBody @Validated UserLanguageDTO userLanguageDTO) {
 		Optional<UserLanguage> userLanguage = userLanguageService.getUserLanguageById(id);
 
@@ -97,6 +103,7 @@ public class UserLanguageController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteUserLanguage(@PathVariable int id) {
 		userLanguageService.deleteUserLanguage(id);
 		return ResponseEntity.ok().build();

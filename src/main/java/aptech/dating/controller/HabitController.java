@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class HabitController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<HabitDTO>> getAllHabits() {
 		List<Habit> habit = habitService.getAllHabits();
 
@@ -52,6 +54,7 @@ public class HabitController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<HabitDTO> getHabitById(@PathVariable int id) {
 		Optional<Habit> habit = habitService.getHabitById(id);
 
@@ -61,12 +64,14 @@ public class HabitController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Habit> createHabit(@RequestBody @Validated HabitDTO habitDTO) {
 		Habit habit = modelMapper.map(habitDTO, Habit.class);
 		return ResponseEntity.ok(habitService.saveHabit(habit));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Habit> updateHabit(@PathVariable int id, @RequestBody @Validated HabitDTO habitDTO) {
 		Optional<Habit> habit = habitService.getHabitById(id);
 
@@ -85,6 +90,7 @@ public class HabitController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteHabit(@PathVariable int id) {
 		habitService.deleteHabit(id);
 		return ResponseEntity.ok().build();

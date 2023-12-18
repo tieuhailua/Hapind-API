@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,6 +42,7 @@ public class BlogImageController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<BlogImageDTO>> getAllBlogImages() {
 		List<BlogImage> blogImage = blogImageService.getAllBlogImages();
 
@@ -51,6 +53,7 @@ public class BlogImageController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<BlogImageDTO> getBlogImageById(@PathVariable int id) {
 		Optional<BlogImage> blogImage = blogImageService.getBlogImageById(id);
 
@@ -60,12 +63,14 @@ public class BlogImageController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<BlogImage> createBlogImage(@RequestBody @Validated BlogImageDTO blogImageDTO) {
 		BlogImage blogImage = modelMapper.map(blogImageDTO, BlogImage.class);
 		return ResponseEntity.ok(blogImageService.saveBlogImage(blogImage));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<BlogImage> updateBlogImage(@PathVariable int id, @Validated BlogImageDTO blogImageDTO) {
 		Optional<BlogImage> blogImage = blogImageService.getBlogImageById(id);
 
@@ -84,6 +89,7 @@ public class BlogImageController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteBlogImage(@PathVariable int id) {
 		blogImageService.deleteBlogImage(id);
 		return ResponseEntity.ok().build();

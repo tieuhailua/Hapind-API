@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class WorkController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<WorkDTO>> getAllWorks() {
 		List<Work> work = workService.getAllWorks();
 
@@ -52,6 +54,7 @@ public class WorkController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<WorkDTO> getWorkById(@PathVariable int id) {
 		Optional<Work> work = workService.getWorkById(id);
 
@@ -61,12 +64,14 @@ public class WorkController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Work> createWork(@RequestBody @Validated WorkDTO workDTO) {
 		Work work = modelMapper.map(workDTO, Work.class);
 		return ResponseEntity.ok(workService.saveWork(work));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Work> updateWork(@PathVariable int id, @RequestBody @Validated WorkDTO workDTO) {
 		Optional<Work> work = workService.getWorkById(id);
 
@@ -85,6 +90,7 @@ public class WorkController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteWork(@PathVariable int id) {
 		workService.deleteWork(id);
 		return ResponseEntity.ok().build();

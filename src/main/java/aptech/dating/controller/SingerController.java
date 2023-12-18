@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class SingerController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<SingerDTO>> getAllSingers() {
 		List<Singer> singer = singerService.getAllSingers();
 
@@ -52,6 +54,7 @@ public class SingerController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<SingerDTO> getSingerById(@PathVariable int id) {
 		Optional<Singer> singer = singerService.getSingerById(id);
 
@@ -61,12 +64,14 @@ public class SingerController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Singer> createSinger(@RequestBody @Validated SingerDTO singerDTO) {
 		Singer singer = modelMapper.map(singerDTO, Singer.class);
 		return ResponseEntity.ok(singerService.saveSinger(singer));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Singer> updateSinger(@PathVariable int id, @RequestBody @Validated SingerDTO singerDTO) {
 		Optional<Singer> singer = singerService.getSingerById(id);
 
@@ -85,6 +90,7 @@ public class SingerController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteSinger(@PathVariable int id) {
 		singerService.deleteSinger(id);
 		return ResponseEntity.ok().build();

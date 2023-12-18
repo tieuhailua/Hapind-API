@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,6 +42,7 @@ public class EvidenceController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<EvidenceDTO>> getAllEvidences() {
 		List<Evidence> evidence = evidenceService.getAllEvidences();
 
@@ -51,6 +53,7 @@ public class EvidenceController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<EvidenceDTO> getEvidenceById(@PathVariable int id) {
 		Optional<Evidence> evidence = evidenceService.getEvidenceById(id);
 
@@ -60,12 +63,14 @@ public class EvidenceController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Evidence> createEvidence(@RequestBody @Validated EvidenceDTO evidenceDTO) {
 		Evidence evidence = modelMapper.map(evidenceDTO, Evidence.class);
 		return ResponseEntity.ok(evidenceService.saveEvidence(evidence));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Evidence> updateEvidence(@PathVariable int id, @RequestBody @Validated EvidenceDTO evidenceDTO) {
 		Optional<Evidence> evidence = evidenceService.getEvidenceById(id);
 
@@ -84,6 +89,7 @@ public class EvidenceController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteEvidence(@PathVariable int id) {
 		evidenceService.deleteEvidence(id);
 		return ResponseEntity.ok().build();

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,6 +44,7 @@ public class UserMusicController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserMusicDTO>> getAllUserMusics() {
 		List<UserMusic> userMusic = userMusicService.getAllUserMusics();
 
@@ -52,6 +54,7 @@ public class UserMusicController {
 		return ResponseEntity.ok(userMusicDTO);
 	}
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserMusicDTO>> getUserMusicById(@PathVariable int id) {
 		Optional<UserMusic> userMusic = userMusicService.getUserMusicById(id);
 
@@ -61,6 +64,7 @@ public class UserMusicController {
 		return ResponseEntity.ok(userMusicDTO);
 	}
 	@GetMapping("/music/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserMusicDTO>> getUserMusicsByUserId(@PathVariable int id) {
 		List<UserMusic> userMusic = userMusicService.getUserMusicsByUserId(id);
 
@@ -71,12 +75,14 @@ public class UserMusicController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserMusic> createUserMusic(@RequestBody @Validated UserMusicDTO userMusicDTO) {
 		UserMusic userMusic = modelMapper.map(userMusicDTO, UserMusic.class);
 		return ResponseEntity.ok(userMusicService.saveUserMusic(userMusic));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserMusic> updateUserMusic(@PathVariable int id, @RequestBody @Validated UserMusicDTO userMusicDTO) {
 		Optional<UserMusic> userMusic = userMusicService.getUserMusicById(id);
 
@@ -95,6 +101,7 @@ public class UserMusicController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteUserMusic(@PathVariable int id) {
 		userMusicService.deleteUserMusic(id);
 		return ResponseEntity.ok().build();

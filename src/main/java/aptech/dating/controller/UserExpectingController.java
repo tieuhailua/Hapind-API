@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,6 +46,7 @@ public class UserExpectingController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserExpectingDTO>> getAllUserExpectings() {
 		List<UserExpecting> userExpecting = userExpectingService.getAllUserExpectings();
 
@@ -55,6 +57,7 @@ public class UserExpectingController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserExpectingDTO> getUserExpectingById(@PathVariable int id) {
 		Optional<UserExpecting> userExpecting = userExpectingService.getUserExpectingById(id);
 
@@ -64,6 +67,7 @@ public class UserExpectingController {
 	}
 	
 	@GetMapping("/expecting/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserExpectingDTO>> getUserExpectingsByUserId(@PathVariable int id) {
 		List<UserExpecting> userExpecting = userExpectingService.getUserExpectingsByUserId(id);
 
@@ -73,12 +77,14 @@ public class UserExpectingController {
 		return ResponseEntity.ok(userExpectingDTO);
 	}
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserExpecting> createUserExpecting(@RequestBody @Validated UserExerciseDTO userExerciseDTO) {
 		UserExpecting userExpecting = modelMapper.map(userExerciseDTO, UserExpecting.class);
 		return ResponseEntity.ok(userExpectingService.saveUserExpecting(userExpecting));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserExpecting> updateUserExpecting(@PathVariable int id, @RequestBody @Validated UserExerciseDTO userExerciseDTO) {
 		Optional<UserExpecting> userExpecting = userExpectingService.getUserExpectingById(id);
 
@@ -97,6 +103,7 @@ public class UserExpectingController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteUserExpecting(@PathVariable int id) {
 		userExpectingService.deleteUserExpecting(id);
 		return ResponseEntity.ok().build();

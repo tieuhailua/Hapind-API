@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class VideoCallController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<VideoCallDTO>> getAllVideoCalls() {
 		List<VideoCall> videoCall = videoCallService.getAllVideoCalls();
 
@@ -52,6 +54,7 @@ public class VideoCallController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<VideoCallDTO> getVideoCallById(@PathVariable int id) {
 		Optional<VideoCall> videoCall = videoCallService.getVideoCallById(id);
 
@@ -61,12 +64,14 @@ public class VideoCallController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<VideoCall> createVideoCall(@RequestBody @Validated VideoCallDTO videoCallDTO) {
 		VideoCall videoCall = modelMapper.map(videoCallDTO, VideoCall.class);
 		return ResponseEntity.ok(videoCallService.saveVideoCall(videoCall));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<VideoCall> updateVideoCall(@PathVariable int id, @RequestBody @Validated VideoCallDTO videoCallDTO) {
 		Optional<VideoCall> videoCall = videoCallService.getVideoCallById(id);
 
@@ -85,6 +90,7 @@ public class VideoCallController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteVideoCall(@PathVariable int id) {
 		videoCallService.deleteVideoCall(id);
 		return ResponseEntity.ok().build();

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class MusicController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<MusicDTO>> getAllMusics() {
 		List<Music> music = musicService.getAllMusics();
 
@@ -52,6 +54,7 @@ public class MusicController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<MusicDTO> getMusicById(@PathVariable int id) {
 		Optional<Music> music = musicService.getMusicById(id);
 
@@ -61,12 +64,14 @@ public class MusicController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Music> createMusic(@RequestBody @Validated MusicDTO musicDTO) {
 		Music music = modelMapper.map(musicDTO, Music.class);
 		return ResponseEntity.ok(musicService.saveMusic(music));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Music> updateMusic(@PathVariable int id, @RequestBody @Validated MusicDTO musicDTO) {
 		Optional<Music> music = musicService.getMusicById(id);
 
@@ -85,6 +90,7 @@ public class MusicController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteMusic(@PathVariable int id) {
 		musicService.deleteMusic(id);
 		return ResponseEntity.ok().build();

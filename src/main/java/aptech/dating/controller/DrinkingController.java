@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,6 +42,7 @@ public class DrinkingController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<DrinkingDTO>> getAllDrinkings() {
 		List<Drinking> drinking = drinkingService.getAllDrinkings();
 
@@ -51,6 +53,7 @@ public class DrinkingController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<DrinkingDTO> getDrinkingById(@PathVariable int id) {
 		Optional<Drinking> drinking = drinkingService.getDrinkingById(id);
 
@@ -60,12 +63,14 @@ public class DrinkingController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Drinking> createDrinking(@RequestBody @Validated DrinkingDTO drinkingDTO) {
 		Drinking drinking = modelMapper.map(drinkingDTO, Drinking.class);
 		return ResponseEntity.ok(drinkingService.saveDrinking(drinking));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Drinking> updateConversation(@PathVariable int id, @RequestBody @Validated DrinkingDTO drinkingDTO) {
 		Optional<Drinking> drinking = drinkingService.getDrinkingById(id);
 
@@ -84,6 +89,7 @@ public class DrinkingController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteDrinking(@PathVariable int id) {
 		drinkingService.deleteDrinking(id);
 		return ResponseEntity.ok().build();

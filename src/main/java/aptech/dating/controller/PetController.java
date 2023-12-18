@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class PetController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<PetDTO>> getAllPets() {
 		List<Pet> pet = petService.getAllPets();
 
@@ -52,6 +54,7 @@ public class PetController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<PetDTO> getPetById(@PathVariable int id) {
 		Optional<Pet> pet = petService.getPetById(id);
 
@@ -61,12 +64,14 @@ public class PetController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Pet> createPet(@RequestBody @Validated PetDTO petDTO) {
 		Pet pet = modelMapper.map(petDTO, Pet.class);
 		return ResponseEntity.ok(petService.savePet(pet));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Pet> updatePet(@PathVariable int id, @RequestBody @Validated PetDTO petDTO) {
 		Optional<Pet> pet = petService.getPetById(id);
 
@@ -85,6 +90,7 @@ public class PetController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deletePet(@PathVariable int id) {
 		petService.deletePet(id);
 		return ResponseEntity.ok().build();

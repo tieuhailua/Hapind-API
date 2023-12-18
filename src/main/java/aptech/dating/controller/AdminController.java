@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
@@ -48,8 +49,9 @@ public class AdminController {
 	public AdminController(AdminService adminService) {
 		this.adminService = adminService;
 	}
-
+	
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<AdminDTO>> getAllAdmins() {
 		List<Admin> admin = adminService.getAllAdmins();
 
@@ -60,6 +62,7 @@ public class AdminController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<AdminDTO> getAdminById(@PathVariable int id) {
 		Optional<Admin> admin = adminService.getAdminById(id);
 
@@ -69,12 +72,14 @@ public class AdminController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Admin> createAdmin(@RequestBody @Validated AdminDTO adminDTO) {
 		Admin admin = modelMapper.map(adminDTO, Admin.class);
 		return ResponseEntity.ok(adminService.saveAdmin(admin));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Admin> updateAdmin(@PathVariable Integer id, @RequestBody @Validated AdminDTO adminDTO) {
 	    Optional<Admin> admin = adminService.getAdminById(id);
 
@@ -93,12 +98,14 @@ public class AdminController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteAdmin(@PathVariable int id) {
 		adminService.deleteAdmin(id);
 		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping("/get/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<AdminDTO> getAdmin(@PathVariable("id") int id) {
 		AdminDTO adminDto = this.adminService.getAdmin(id);
 		return new ResponseEntity<AdminDTO>(adminDto, HttpStatus.OK);

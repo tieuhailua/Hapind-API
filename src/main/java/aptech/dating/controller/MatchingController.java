@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class MatchingController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<MatchingDTO>> getAllMatchings() {
 		List<Matching> matching = matchingService.getAllMatchings();
 
@@ -52,6 +54,7 @@ public class MatchingController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<MatchingDTO> getMatchingById(@PathVariable int id) {
 		Optional<Matching> matching = matchingService.getMatchingById(id);
 
@@ -61,12 +64,14 @@ public class MatchingController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Matching> createMatching(@RequestBody @Validated MatchingDTO matchingDTO) {
 		Matching matching = modelMapper.map(matchingDTO, Matching.class);
 		return ResponseEntity.ok(matchingService.saveMatching(matching));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Matching> updateMatching(@PathVariable int id, @RequestBody @Validated MatchingDTO matchingDTO) {
 		Optional<Matching> matching = matchingService.getMatchingById(id);
 
@@ -85,6 +90,7 @@ public class MatchingController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteMatching(@PathVariable int id) {
 		matchingService.deleteMatching(id);
 		return ResponseEntity.ok().build();

@@ -38,6 +38,7 @@ public class FilesController {
   FilesStorageService storageService;
 
   @PostMapping("/upload")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<ResponseMessage> uploadFiles(@RequestParam("files") MultipartFile[] files) {
     String message = "";
     try {
@@ -57,6 +58,7 @@ public class FilesController {
   }
 
   @GetMapping("/files")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<List<FileInfo>> getListFiles() {
     List<FileInfo> fileInfos = storageService.loadAll().map(path -> {
       String filename = path.getFileName().toString();
@@ -70,6 +72,7 @@ public class FilesController {
   }
 
   @GetMapping("/files/{filename:.+}")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<Resource> getFile(@PathVariable String filename) {
     Resource file = storageService.load(filename);
     return ResponseEntity.ok()

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,6 +44,7 @@ public class ReasonController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<ReasonDTO>> getAllReasons() {
 		List<Reason> reason = reasonService.getAllReasons();
 
@@ -53,6 +55,7 @@ public class ReasonController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<ReasonDTO> getReasonById(@PathVariable int id) {
 		Optional<Reason> reason = reasonService.getReasonById(id);
 
@@ -62,12 +65,14 @@ public class ReasonController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Reason> createReason(@RequestBody @Validated ReasonDTO reasonDTO) {
 		Reason reason = modelMapper.map(reasonDTO, Reason.class);
 		return ResponseEntity.ok(reasonService.saveReason(reason));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Reason> updateReason(@PathVariable int id, @RequestBody @Validated ReasonDTO reasonDTO) {
 		Optional<Reason> reason = reasonService.getReasonById(id);
 
@@ -86,6 +91,7 @@ public class ReasonController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteReason(@PathVariable int id) {
 		reasonService.deleteReason(id);
 		return ResponseEntity.ok().build();

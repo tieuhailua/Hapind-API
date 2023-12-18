@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,6 +53,7 @@ public class ExpectingController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<ExpectingDTO> getExpectingById(@PathVariable int id) {
 		Optional<Expecting> expecting = expectingService.getExpectingById(id);
 
@@ -61,12 +63,14 @@ public class ExpectingController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Expecting> createExpecting(@RequestBody @Validated ExpectingDTO expectingDTO) {
 		Expecting expecting = modelMapper.map(expectingDTO, Expecting.class);
 		return ResponseEntity.ok(expectingService.saveExpecting(expecting));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Expecting> updateExpecting(@PathVariable int id, @RequestBody @Validated ExpectingDTO expectingDTO) {
 		Optional<Expecting> expecting = expectingService.getExpectingById(id);
 
@@ -85,6 +89,7 @@ public class ExpectingController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteExpecting(@PathVariable int id) {
 		expectingService.deleteExpecting(id);
 		return ResponseEntity.ok().build();

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +43,7 @@ public class BlockController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<BlockDTO>> getAllBlocks() {
 		List<Block> block = blockService.getAllBlocks();
 
@@ -52,6 +54,7 @@ public class BlockController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<BlockDTO> getBlockById(@PathVariable int id) {
 		Optional<Block> block = blockService.getBlockById(id);
 
@@ -61,12 +64,14 @@ public class BlockController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Block> createBlock(@RequestBody @Validated BlockDTO blockDTO) {
 		Block block = modelMapper.map(blockDTO, Block.class);
 		return ResponseEntity.ok(blockService.saveBlock(block));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Block> updateBlock(@PathVariable int id, @RequestBody @Validated BlockDTO blockDTO) {
 		Optional<Block> block = blockService.getBlockById(id);
 
@@ -85,6 +90,7 @@ public class BlockController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteBlock(@PathVariable int id) {
 		blockService.deleteBlock(id);
 		return ResponseEntity.ok().build();

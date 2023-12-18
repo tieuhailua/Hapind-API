@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,6 +45,7 @@ public class UserSingerController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserSingerDTO>> getAllUserSingers() {
 		List<UserSinger> userSinger = userSingerService.getAllUserSingers();
 
@@ -54,6 +56,7 @@ public class UserSingerController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserSingerDTO> getUserSingerById(@PathVariable int id) {
 		Optional<UserSinger> userSinger = userSingerService.getUserSingerById(id);
 
@@ -63,6 +66,7 @@ public class UserSingerController {
 	}
 	
 	@GetMapping("/singer/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserSingerDTO>> getUserSingersByUserId(@PathVariable int id) {
 		List<UserSinger> userSinger = userSingerService.getUserSingersByUserId(id);
 
@@ -73,12 +77,14 @@ public class UserSingerController {
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserSinger> createUserSinger(@RequestBody @Validated UserSingerDTO userSingerDTO) {
 		UserSinger userSinger = modelMapper.map(userSingerDTO, UserSinger.class);
 		return ResponseEntity.ok(userSingerService.saveUserSinger(userSinger));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserSinger> updateUserSinger(@PathVariable int id, @RequestBody @Validated UserSingerDTO userSingerDTO) {
 		Optional<UserSinger> userSinger = userSingerService.getUserSingerById(id);
 
@@ -97,6 +103,7 @@ public class UserSingerController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteUserSinger(@PathVariable int id) {
 		userSingerService.deleteUserSinger(id);
 		return ResponseEntity.ok().build();

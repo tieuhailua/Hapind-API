@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,6 +42,7 @@ public class ExerciseController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<ExerciseDTO>> getAllExercises() {
 		List<Exercise> exercise = exerciseService.getAllExercises();
 
@@ -51,6 +53,7 @@ public class ExerciseController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<ExerciseDTO> getExerciseById(@PathVariable int id) {
 		Optional<Exercise> exercise = exerciseService.getExerciseById(id);
 
@@ -60,12 +63,14 @@ public class ExerciseController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Exercise> createEvidence(@RequestBody @Validated ExerciseDTO exerciseDTO) {
 		Exercise exercise = modelMapper.map(exerciseDTO, Exercise.class);
 		return ResponseEntity.ok(exerciseService.saveExercise(exercise));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Exercise> updateExercise(@PathVariable int id, @RequestBody @Validated ExerciseDTO exerciseDTO) {
 		Optional<Exercise> exercise = exerciseService.getExerciseById(id);
 
@@ -84,6 +89,7 @@ public class ExerciseController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteExercise(@PathVariable int id) {
 		exerciseService.deleteExercise(id);
 		return ResponseEntity.ok().build();

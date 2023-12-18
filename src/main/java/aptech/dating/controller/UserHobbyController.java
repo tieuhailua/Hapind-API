@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,6 +45,7 @@ public class UserHobbyController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserHobbyDTO>> getAllUserHobbys() {
 		List<UserHobby> userHobby = userHobbyService.getAllUserHobbys();
 
@@ -54,6 +56,7 @@ public class UserHobbyController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserHobbyDTO> getUserHobbyById(@PathVariable int id) {
 		Optional<UserHobby> userHobby = userHobbyService.getUserHobbyById(id);
 
@@ -63,6 +66,7 @@ public class UserHobbyController {
 	}
 
 	@GetMapping("/hobby/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<UserHobbyDTO>> getUserHobbiesByUserId(@PathVariable int id) {
 		List<UserHobby> userHobby = userHobbyService.getUserHobbiesByUserId(id);
 
@@ -73,12 +77,14 @@ public class UserHobbyController {
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserHobby> createUserHobby(@RequestBody @Validated UserHobbyDTO userHobbyDTO) {
 		UserHobby userHobby = modelMapper.map(userHobbyDTO, UserHobby.class);
 		return ResponseEntity.ok(userHobbyService.saveUserHobby(userHobby));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserHobby> updateUserHobby(@PathVariable int id, @RequestBody @Validated UserHobbyDTO userHobbyDTO) {
 		Optional<UserHobby> userHobby = userHobbyService.getUserHobbyById(id);
 
@@ -97,6 +103,7 @@ public class UserHobbyController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteUserHobby(@PathVariable int id) {
 		userHobbyService.deleteUserHobby(id);
 		return ResponseEntity.ok().build();

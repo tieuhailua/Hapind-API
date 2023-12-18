@@ -44,6 +44,7 @@ public class NotificationController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<NotificationDTO>> getAllNotifications() {
 		List<Notification> notification = notificationService.getAllNotifications();
 
@@ -54,6 +55,7 @@ public class NotificationController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<NotificationDTO> getNotificationById(@PathVariable int id) {
 		Optional<Notification> notification = notificationService.getNotificationById(id);
 
@@ -72,6 +74,7 @@ public class NotificationController {
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Notification> updateNotification(@PathVariable int id, @RequestBody @Validated NotificationDTO notificationDTO) {
 		Optional<Notification> notification = notificationService.getNotificationById(id);
 
@@ -90,6 +93,7 @@ public class NotificationController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteNotification(@PathVariable int id) {
 		notificationService.deleteNotification(id);
 		return ResponseEntity.ok().build();

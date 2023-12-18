@@ -10,6 +10,7 @@ import aptech.dating.DTO.AdminDTO;
 import aptech.dating.DTO.BannedDTO;
 import aptech.dating.model.Admin;
 import aptech.dating.model.Banned;
+import aptech.dating.model.User;
 import aptech.dating.repository.BannedRepository;
 
 @Service
@@ -31,6 +32,14 @@ public class BannedService {
 
     public Optional<Banned> getBannedById(int id) {
         return bannedRepository.findById(id);
+    }
+    
+    public Optional<Admin> getAdminById(int id) {
+        return bannedRepository.findByAdminId(id);
+    }
+    
+    public Optional<User> getUserById(int id) {
+        return bannedRepository.findByUserId(id);
     }
 
     public Banned saveBanned(Banned banned) {

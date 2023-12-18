@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -25,7 +27,10 @@ import aptech.dating.DTO.FamilyDTO;
 import aptech.dating.model.Admin;
 import aptech.dating.model.Banned;
 import aptech.dating.model.Family;
+import aptech.dating.model.User;
+import aptech.dating.service.AdminService;
 import aptech.dating.service.BannedService;
+import aptech.dating.service.UserService;
 
 @RestController
 @RequestMapping("/api/banned")
@@ -36,11 +41,14 @@ public class BannedController {
 	
 	// Declare the service as final to ensure its immutability
 	private final BannedService bannedService;
-
+	private final UserService userService;
+	private final AdminService adminService;
 	// Use constructor-based dependency injection
 	@Autowired
-	public BannedController(BannedService bannedService) {
+	public BannedController(BannedService bannedService, UserService userService, AdminService adminService) {
 		this.bannedService = bannedService;
+		this.userService = userService;
+		this.adminService = adminService;
 	}
 
 	@GetMapping
@@ -62,12 +70,25 @@ public class BannedController {
 		return bannedDTO!=null?ResponseEntity.ok(bannedDTO):ResponseEntity.notFound().build();
 	}
 
-	@PostMapping
-	public ResponseEntity<Banned> createBanned(@RequestBody @Validated BannedDTO bannedDTO) {
+	
+	@GetMapping("/ban")
+	@PreAuthorize("hasAuthority('admin')")
+	public ResponseEntity<Banned> createBanned(@RequestParam int adminId, int userId) {
+		BannedDTO bannedDTO = new BannedDTO();
 		Banned banned = modelMapper.map(bannedDTO, Banned.class);
+		banned.setAdmin(adminService.getAdminById(adminId).get());
+		banned.setUser(userService.getUserById(userId).get());
 		return ResponseEntity.ok(bannedService.saveBanned(banned));
 	}
 
+//	@PostMapping
+//	public ResponseEntity<Banned> addUserBanned(@RequestBody @Validated BannedDTO bannedDTO, int userId,  int adminId) {
+//		Banned banned = modelMapper.map(bannedDTO, Banned.class);
+//		banned.setAdmin(adminService.getAdminById(adminId).get());
+//		banned.setUser(userService.getUserById(userId).get());
+//		return ResponseEntity.ok(bannedService.saveBanned(banned));
+//	}
+	
 	@PutMapping("/{id}")
 	public ResponseEntity<Banned> updateBanned(@PathVariable int id, @RequestBody @Validated BannedDTO bannedDTO) {
 		Optional<Banned> banned = bannedService.getBannedById(id);

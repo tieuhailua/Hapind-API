@@ -2,18 +2,18 @@ package aptech.dating.DTO;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public class NotificationDTO {
 	private Integer id;
-	@NotNull(message = "Use Id must be selected")
-	private int useId;
-	@NotEmpty(message="Message can't be blank")
 	
+	@NotEmpty(message="Message can't be blank")
 	private String message;
 	
-	@NotNull(message = "Create At must be selected")
+	@JsonFormat(pattern="yyyy/MM/dd")
 	private Date createdAt;
 	
 	private boolean read = false;
@@ -23,23 +23,15 @@ public class NotificationDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public NotificationDTO(@NotNull(message = "Use Id must be selected") int useId,
+	public NotificationDTO(
 			@NotEmpty(message = "Message can't be blank") String message,
 			@NotNull(message = "Create At must be selected") Date createdAt, boolean read) {
 		super();
-		this.useId = useId;
 		this.message = message;
 		this.createdAt = createdAt;
 		this.read = read;
 	}
 
-	public int getUseId() {
-		return useId;
-	}
-
-	public void setUseId(int useId) {
-		this.useId = useId;
-	}
 
 	public String getMessage() {
 		return message;

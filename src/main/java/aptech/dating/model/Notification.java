@@ -5,6 +5,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,16 +23,14 @@ import jakarta.persistence.TemporalType;
 public class Notification implements java.io.Serializable {
 
 	private Integer id;
-	private int useId;
 	private String message;
 	private Date createdAt;
-	private boolean read;
+	private boolean read = false;
 
 	public Notification() {
 	}
 
-	public Notification(int useId, String message, Date createdAt, boolean read) {
-		this.useId = useId;
+	public Notification( String message, Date createdAt, boolean read) {
 		this.message = message;
 		this.createdAt = createdAt;
 		this.read = read;
@@ -48,14 +48,6 @@ public class Notification implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "user_id", nullable = false)
-	public int getUseId() {
-		return this.useId;
-	}
-
-	public void setUseId(int useId) {
-		this.useId = useId;
-	}
 
 	@Column(name = "message", nullable = false)
 	public String getMessage() {
@@ -68,6 +60,7 @@ public class Notification implements java.io.Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at", nullable = false, length = 23)
+	@JsonFormat(pattern="yyyy/MM/dd")
 	public Date getCreateAt() {
 		return this.createdAt;
 	}

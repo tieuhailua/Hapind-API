@@ -1,5 +1,6 @@
 package aptech.dating.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -7,6 +8,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -61,8 +63,11 @@ public class NotificationController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Notification> createNotification(@RequestBody @Validated NotificationDTO notificationDTO) {
+		Date date = new Date();
 		Notification notification = modelMapper.map(notificationDTO, Notification.class);
+		notification.setCreateAt(date);
 		return ResponseEntity.ok(notificationService.saveNotification(notification));
 	}
 

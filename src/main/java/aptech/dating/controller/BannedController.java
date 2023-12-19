@@ -73,14 +73,14 @@ public class BannedController {
 	}
 
 	
-	@GetMapping("/ban")
+	@PostMapping
 	@PreAuthorize("hasAuthority('admin')")
-	public ResponseEntity<Banned> createBanned(@RequestParam int adminId, int userId) {
-		BannedDTO bannedDTO = new BannedDTO();
-		Banned banned = modelMapper.map(bannedDTO, Banned.class);
-		banned.setAdmin(adminService.getAdminById(adminId).get());
-		banned.setUser(userService.getUserById(userId).get());
-		return ResponseEntity.ok(bannedService.saveBanned(banned));
+	public ResponseEntity<Banned> addUserBanned(@RequestParam("userId") int userId, @RequestParam("adminId") int adminId) {
+	    
+	    Banned banned = new Banned();
+	    banned.setAdmin(adminService.getAdminById(adminId).get());
+	    banned.setUser(userService.getUserById(userId).get());	
+	    return ResponseEntity.ok(bannedService.saveBanned(banned));
 	}
 
 //	@PostMapping
@@ -111,6 +111,7 @@ public class BannedController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Void> deleteBanned(@PathVariable int id) {
 		bannedService.deleteBanned(id);
 		return ResponseEntity.ok().build();

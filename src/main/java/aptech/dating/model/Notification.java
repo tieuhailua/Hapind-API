@@ -61,11 +61,11 @@ public class Notification implements java.io.Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at", nullable = false, length = 23)
 	@JsonFormat(pattern="yyyy/MM/dd")
-	public Date getCreateAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreateAt(Date createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 

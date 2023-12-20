@@ -41,7 +41,7 @@ public class JwtUtils {
 	public String generateToken(Authentication authentication) {
 		AdminDetailsImpl userPrincipal = (AdminDetailsImpl) authentication.getPrincipal();
 		AdminDTO amdin = adminService.getAdmin(userPrincipal.getId());
-		return Jwts.builder().setClaims(claimsMap(amdin)).setSubject(userPrincipal.getUsername())
+		return Jwts.builder().setClaims(claimsMap(amdin)).setSubject(userPrincipal.getId().toString())
 				.setAudience(amdin.getRole())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + this.getExpirationMs()))

@@ -69,7 +69,7 @@ public class NotificationController {
 	public ResponseEntity<Notification> createNotification(@RequestBody @Validated NotificationDTO notificationDTO) {
 		Date date = new Date();
 		Notification notification = modelMapper.map(notificationDTO, Notification.class);
-		notification.setCreateAt(date);
+		notification.setCreatedAt(date);
 		return ResponseEntity.ok(notificationService.saveNotification(notification));
 	}
 

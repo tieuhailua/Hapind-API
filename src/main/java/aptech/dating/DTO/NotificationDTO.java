@@ -25,7 +25,7 @@ public class NotificationDTO {
 
 	public NotificationDTO(
 			@NotEmpty(message = "Message can't be blank") String message,
-			@NotNull(message = "Create At must be selected") Date createdAt, boolean read) {
+			@NotNull(message = "Created At must be selected") Date createdAt, boolean read) {
 		super();
 		this.message = message;
 		this.createdAt = createdAt;

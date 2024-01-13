@@ -3,6 +3,7 @@ package aptech.dating.service;
 import java.util.List;
 import java.util.Optional;
 
+import aptech.dating.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,10 @@ public class PurposeService {
 
 	public Optional<Purpose> getPurposeById(int id) {
 		return purposeRepository.findById(id);
+	}
+
+	public Purpose getPurposeByUserId(User user) {
+		return purposeRepository.findPurposeByUsers(user);
 	}
 
 	public Purpose savePurpose(Purpose purpose) {

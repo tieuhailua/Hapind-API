@@ -2,24 +2,45 @@ package aptech.dating.controller;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
+import java.util.Random;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import aptech.dating.DTO.UserDTO;
+import aptech.dating.model.Drinking;
+import aptech.dating.model.EmailDetails;
+import aptech.dating.model.User;
+import aptech.dating.payload.request.EmailLoginRequest;
 import aptech.dating.payload.request.LoginRequest;
+import aptech.dating.payload.request.SignupRequest;
 import aptech.dating.payload.response.JwtResponse;
+import aptech.dating.payload.response.MessageResponse;
 import aptech.dating.repository.AdminRepository;
-import aptech.dating.security.JwtUtils;
+import aptech.dating.repository.UserRepository;
+import aptech.dating.security.admin.JwtUtils;
+import aptech.dating.security.user.UserJwtUtils;
 import aptech.dating.service.AdminDetailsImpl;
+import aptech.dating.service.EmailService;
+import aptech.dating.service.UserDetailsImpl;
+import aptech.dating.service.UserService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -32,15 +53,34 @@ public class AuthController {
 	AdminRepository adminRepository;
 
 	@Autowired
+	@Qualifier("adminAuthenticationManager")
+	private AuthenticationManager adminAuthenticationManager;
+
+	@Autowired
+	@Qualifier("userAuthenticationManager")
+	private AuthenticationManager userAuthenticationManager;
+
+	@Autowired
 	PasswordEncoder encoder;
 
 	@Autowired
 	JwtUtils jwtUtils;
 
-	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	@Autowired
+	UserJwtUtils userjwtUtils;
 
-		Authentication authentication = authenticationManager.authenticate(
+	@Autowired
+	UserRepository userRepository;
+
+	@Autowired
+	private EmailService emailService;
+
+	private ModelMapper modelMapper;
+
+	@PostMapping("/signin")
+	public ResponseEntity<?> authenticateAdmin(@Valid @RequestBody LoginRequest loginRequest) {
+
+		Authentication authentication = adminAuthenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -56,6 +96,49 @@ public class AuthController {
 				adminRepository.findByUsername(loginRequest.getUsername()).get().getRole()));
 	}
 
+	@PostMapping("/signUp")
+	public ResponseEntity<User> createUser(@RequestBody @Validated UserDTO userDTO) {
+		User user = modelMapper.map(userDTO, User.class);
+		return ResponseEntity.ok(userRepository.save(user));
+	}
+
+	@PostMapping("/sendOtp/{email}")
+	public ResponseEntity<String> sendOtp(@PathVariable String email) {
+		Random random = new Random();
+		int otp = random.nextInt(9000) + 1000;
+		EmailDetails emailDetails = new EmailDetails(email, "Your OTP is: " + otp, "Hapind OTP", "");
+		String status = emailService.sendSimpleMail(emailDetails);
+		return ResponseEntity.ok(""+otp);
+	}
+
+	@PostMapping("/emailLogin")
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+
+		Authentication authentication = userAuthenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		String jwt = userjwtUtils.generateToken(authentication);
+
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), "user"));
+	}
+
+	@GetMapping("/checkAccountExits/{username}")
+	public ResponseEntity<?> checkAccountExits(@PathVariable String username) {
+		if (username.contains("@")) {
+			if (userRepository.findByEmail(username).isPresent()) {
+				return ResponseEntity.badRequest().body("Email is already taken!");
+			} else {
+				return ResponseEntity.ok().build();
+			}
+		} else if (userRepository.findByPhone(username).isPresent()) {
+			return ResponseEntity.badRequest().body("Phone is already taken!");
+		}
+		return ResponseEntity.ok().build();
+	}
+
 //  @PostMapping("/signup")
 //  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 //    if (adminRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -66,7 +149,7 @@ public class AuthController {
 //
 //
 //    // Create new user's account
-//    Admin admin = new Admin(signUpRequest.getUsername(), 
+//    User admin = new User(signUpRequest.getUsername(), 
 //               encoder.encode(signUpRequest.getPassword()));
 //
 //    String strRoles = signUpRequest.getRole();

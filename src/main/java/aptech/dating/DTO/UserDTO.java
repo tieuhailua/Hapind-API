@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import aptech.dating.model.Banned;
 import aptech.dating.model.Block;
 import aptech.dating.model.Drinking;
@@ -30,139 +32,95 @@ import aptech.dating.model.Work;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDTO {
 	private Integer id;
-	@NotNull(message = "Drinking must be selected")
 	private Drinking drinking;
 	
-	@NotNull(message = "Family must be selected")
 	private Family family;
 	
-	@NotNull(message = "Habit must be selected")
 	private Habit habit;
 	
-	@NotNull(message = "Literacy must be selected")
 	private Literacy literacy;
 	
-	@NotNull(message = "Purpose must be selected")
 	private Purpose purpose;
 	
-	@NotNull(message = "Smoking must be selected")
 	private Smoking smoking;
 	
-	@NotNull(message = "Status must be selected")
 	private Status status;
 	
-	@NotNull(message = "Work must be selected")
 	private Work work;
 	
-	@NotEmpty(message="Email can't be blank")
 	private String email;
 	
-	@NotEmpty(message="Phone can't be blank")
 	private String phone;
 	
-	@NotEmpty(message="Password can't be blank")
-	@Size(min = 8, max = 32, message = "Password must be between 8 and 32 characters")
 	private String password;
 	
-	@NotEmpty(message="Full Name can't be blank")
 	private String fullname;
 	
-	@NotNull(message = "DOB must be selected")
 	private Date dob;
 	
-	@NotEmpty(message="Gender can't be blank")
 	private String gender;
 	
-	@NotEmpty(message="Finding can't be blank")
 	private String finding;
 	
-	@NotNull(message = "Distance must be selected")
 	private int distance;
 	
-	@NotEmpty(message="Address can't be blank")
 	private String address;
 	
-	@NotEmpty(message="School can't be blank")
 	private String school;
 	
-	@NotEmpty(message="Description can't be blank")
 	private String description;
 	
-	@NotNull(message = "Height must be selected")
 	private Integer height;
 	
-	@NotNull(message = "Weight must be selected")
 	private Integer weight;
 	
-	@NotEmpty(message="Zodiac can't be blank")
 	private String zodiac;
 	
-	@NotNull(message = "Create Time must be selected")
 	private Date createTime;
 	
-	@NotNull(message = "Last Login must be selected")
 	private Date lastLogin;
 	
 	private Boolean online = false;
 	
-	@NotNull(message = "Matching Second must be selected")
 	private Set<Matching> matchingsForSecondUserId = new HashSet<Matching>(0);
 	
-	@NotNull(message = "Mathching Report must be selected")
 	private Set<Report> reportsForReportedId = new HashSet<Report>(0);
 	
-	@NotNull(message = "User Conversation must be selected")
 	private Set<UserConversation> userConversations = new HashSet<UserConversation>(0);
 	
-	@NotNull(message = "User Exercise must be selected")
 	private Set<UserExercise> userExercises = new HashSet<UserExercise>(0);
 	
-	@NotNull(message = "Video Call must be selected")
 	private Set<VideoCall> videoCallsForReceiverId = new HashSet<VideoCall>(0);
 	
-	@NotNull(message = "Message must be selected")
 	private Set<Message> messages = new HashSet<Message>(0);
 	
-	@NotNull(message = "User Hobby must be selected")
 	private Set<UserHobby> userHobbies = new HashSet<UserHobby>(0);
 	
-	@NotNull(message = "Block for Blocked must be selected")
 	private Set<Block> blocksForBlockedId = new HashSet<Block>(0);
 	
-	@NotNull(message = "User Image must be selected")
 	private Set<UserImage> userImages = new HashSet<UserImage>(0);
 	
-	@NotNull(message = "Matching For First must be selected")
 	private Set<Matching> matchingsForFirstUserId = new HashSet<Matching>(0);
 	
-	@NotNull(message = "User Language must be selected")
 	private Set<UserLanguage> userLanguages = new HashSet<UserLanguage>(0);
 	
-	@NotNull(message = "Video Call For Caller must be selected")
 	private Set<VideoCall> videoCallsForCallerId = new HashSet<VideoCall>(0);
 	
-	@NotNull(message = "Block For Use must be selected")
 	private Set<Block> blocksForUseId = new HashSet<Block>(0);
 	
-	@NotNull(message = "User Expecting must be selected")
 	private Set<UserExpecting> userExpectings = new HashSet<UserExpecting>(0);
 	
-	@NotNull(message = "Banned must be selected")
 	private Set<Banned> banneds = new HashSet<Banned>(0);
 	
-	@NotNull(message = "User Pet must be selected")
 	private Set<UserPet> userPets = new HashSet<UserPet>(0);
 	
-	@NotNull(message = "User Singer must be selected")
 	private Set<UserSinger> userSingers = new HashSet<UserSinger>(0);
 	
-	@NotNull(message = "Report For Reporter must be selected")
 	private Set<Report> reportsForReporterId = new HashSet<Report>(0);
 	
-	@NotNull(message = "User Music must be selected")
 	private Set<UserMusic> userMusics = new HashSet<UserMusic>(0);
 
 	public UserDTO() {
@@ -170,49 +128,17 @@ public class UserDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserDTO(@NotNull(message = "Drinking must be selected") Drinking drinking,
-			@NotNull(message = "Family must be selected") Family family,
-			@NotNull(message = "Habit must be selected") Habit habit,
-			@NotNull(message = "Literacy must be selected") Literacy literacy,
-			@NotNull(message = "Purpose must be selected") Purpose purpose,
-			@NotNull(message = "Smoking must be selected") Smoking smoking,
-			@NotNull(message = "Status must be selected") Status status,
-			@NotNull(message = "Work must be selected") Work work,
-			@NotEmpty(message = "Email can't be blank") String email,
-			@NotEmpty(message = "Phone can't be blank") String phone,
-			@NotEmpty(message = "Password can't be blank") @Size(min = 8, max = 32, message = "Password must be between 8 and 32 characters") String password,
-			@NotEmpty(message = "Full Name can't be blank") String fullname,
-			@NotNull(message = "DOB must be selected") Date dob,
-			@NotEmpty(message = "Gender can't be blank") String gender,
-			@NotEmpty(message = "Finding can't be blank") String finding,
-			@NotNull(message = "Distance must be selected") int distance,
-			@NotEmpty(message = "Address can't be blank") String address,
-			@NotEmpty(message = "School can't be blank") String school,
-			@NotEmpty(message = "Description can't be blank") String description,
-			@NotNull(message = "Height must be selected") Integer height,
-			@NotNull(message = "Weight must be selected") Integer weight,
-			@NotEmpty(message = "Zodiac can't be blank") String zodiac,
-			@NotNull(message = "Create Time must be selected") Date createTime,
-			@NotNull(message = "Last Login must be selected") Date lastLogin, Boolean online,
-			@NotNull(message = "Matching Second must be selected") Set<Matching> matchingsForSecondUserId,
-			@NotNull(message = "Mathching Report must be selected") Set<Report> reportsForReportedId,
-			@NotNull(message = "User Conversation must be selected") Set<UserConversation> userConversations,
-			@NotNull(message = "User Exercise must be selected") Set<UserExercise> userExercises,
-			@NotNull(message = "Video Call must be selected") Set<VideoCall> videoCallsForReceiverId,
-			@NotNull(message = "Message must be selected") Set<Message> messages,
-			@NotNull(message = "User Hobby must be selected") Set<UserHobby> userHobbies,
-			@NotNull(message = "Block for Blocked must be selected") Set<Block> blocksForBlockedId,
-			@NotNull(message = "User Image must be selected") Set<UserImage> userImages,
-			@NotNull(message = "Matching For First must be selected") Set<Matching> matchingsForFirstUserId,
-			@NotNull(message = "User Language must be selected") Set<UserLanguage> userLanguages,
-			@NotNull(message = "Video Call For Caller must be selected") Set<VideoCall> videoCallsForCallerId,
-			@NotNull(message = "Block For Use must be selected") Set<Block> blocksForUseId,
-			@NotNull(message = "User Expecting must be selected") Set<UserExpecting> userExpectings,
-			@NotNull(message = "Banned must be selected") Set<Banned> banneds,
-			@NotNull(message = "User Pet must be selected") Set<UserPet> userPets,
-			@NotNull(message = "User Singer must be selected") Set<UserSinger> userSingers,
-			@NotNull(message = "Report For Reporter must be selected") Set<Report> reportsForReporterId,
-			@NotNull(message = "User Music must be selected") Set<UserMusic> userMusics) {
+	public UserDTO(Drinking drinking, Family family, Habit habit, Literacy literacy, Purpose purpose, Smoking smoking,
+			Status status, Work work, String email, String phone, String password, String fullname, Date dob,
+			String gender, String finding, int distance, String address, String school, String description,
+			Integer height, Integer weight, String zodiac, Date createTime, Date lastLogin, Boolean online,
+			Set<Matching> matchingsForSecondUserId, Set<Report> reportsForReportedId,
+			Set<UserConversation> userConversations, Set<UserExercise> userExercises,
+			Set<VideoCall> videoCallsForReceiverId, Set<Message> messages, Set<UserHobby> userHobbies,
+			Set<Block> blocksForBlockedId, Set<UserImage> userImages, Set<Matching> matchingsForFirstUserId,
+			Set<UserLanguage> userLanguages, Set<VideoCall> videoCallsForCallerId, Set<Block> blocksForUseId,
+			Set<UserExpecting> userExpectings, Set<Banned> banneds, Set<UserPet> userPets, Set<UserSinger> userSingers,
+			Set<Report> reportsForReporterId, Set<UserMusic> userMusics) {
 		super();
 		this.drinking = drinking;
 		this.family = family;
@@ -259,6 +185,9 @@ public class UserDTO {
 		this.reportsForReporterId = reportsForReporterId;
 		this.userMusics = userMusics;
 	}
+
+
+
 
 	public Drinking getDrinking() {
 		return drinking;
@@ -443,7 +372,7 @@ public class UserDTO {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-
+	
 	public Date getLastLogin() {
 		return lastLogin;
 	}

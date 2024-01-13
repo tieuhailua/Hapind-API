@@ -24,7 +24,8 @@ public class Reason implements java.io.Serializable {
 	private Integer id;
 	private String name;
 	private Set<Report> reports = new HashSet<Report>(0);
-
+	private Set<Banned> banneds = new HashSet<Banned>(0);
+	
 	public Reason() {
 	}
 
@@ -32,9 +33,10 @@ public class Reason implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public Reason(String name, Set<Report> reports) {
+	public Reason(String name, Set<Report> reports,Set<Banned> banneds) {
 		this.name = name;
 		this.reports = reports;
+		this.banneds = banneds;
 	}
 
 	@Id
@@ -66,5 +68,16 @@ public class Reason implements java.io.Serializable {
 	public void setReports(Set<Report> reports) {
 		this.reports = reports;
 	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "reason")
+	public Set<Banned> getBanneds() {
+		return banneds;
+	}
+
+	public void setBanneds(Set<Banned> banneds) {
+		this.banneds = banneds;
+	}
+	
+	
 
 }

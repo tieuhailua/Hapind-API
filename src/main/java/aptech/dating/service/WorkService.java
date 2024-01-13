@@ -1,8 +1,11 @@
 package aptech.dating.service;
 
+
+
 import java.util.List;
 import java.util.Optional;
 
+import aptech.dating.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,10 @@ public class WorkService {
 
     public Optional<Work> getWorkById(int id) {
         return workRepository.findById(id);
+    }
+
+    public Work getWorkByUserId(User user) {
+        return workRepository.findWorkByUsers(user);
     }
 
     public Work saveWork(Work work) {

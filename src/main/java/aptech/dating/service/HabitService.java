@@ -3,6 +3,7 @@ package aptech.dating.service;
 import java.util.List;
 import java.util.Optional;
 
+import aptech.dating.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,10 @@ public class HabitService {
 
     public Optional<Habit> getHabitById(int id) {
         return habitRepository.findById(id);
+    }
+
+    public Habit getHabitByUserId(User user) {
+        return habitRepository.findHabitByUsers(user);
     }
 
     public Habit saveHabit(Habit habit) {

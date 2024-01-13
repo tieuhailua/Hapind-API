@@ -62,7 +62,9 @@ public class UserImageController {
 		
 		return userImageDTO!=null?ResponseEntity.ok(userImageDTO):ResponseEntity.notFound().build();
 	}
+	
 
+	
 	@PostMapping
 	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserImage> createUserImage(@RequestBody @Validated UserImageDTO userImageDTO) {

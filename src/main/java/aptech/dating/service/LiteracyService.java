@@ -3,6 +3,7 @@ package aptech.dating.service;
 import java.util.List;
 import java.util.Optional;
 
+import aptech.dating.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,10 @@ public class LiteracyService {
 
     public Optional<Literacy> getLiteracyById(int id) {
         return literacyRepository.findById(id);
+    }
+
+    public Literacy getLiteracyByUserId(User user) {
+        return literacyRepository.findLiteracyByUsers(user);
     }
 
     public Literacy saveLiteracy(Literacy literacy) {

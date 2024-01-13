@@ -31,7 +31,11 @@ public class StatusService {
     public Optional<Status> getStatusById(int id) {
         return statusRepository.findById(id);
     }
-
+    
+    public Optional<Status> getStatusByName(String name) {
+        return statusRepository.findByName(name);
+    }
+    
     public Status saveStatus(Status status) {
         return statusRepository.save(status);
     }

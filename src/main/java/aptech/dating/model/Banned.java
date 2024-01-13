@@ -24,14 +24,20 @@ public class Banned implements java.io.Serializable {
 	private Integer id;
 	private Admin admin;
 	private User user;
-
+	private Reason reason;
+ 
 	public Banned() {
 	}
 
-	public Banned(Admin admin, User user) {
+	
+	public Banned(Admin admin, User user, Reason reason) {
+		super();
 		this.admin = admin;
 		this.user = user;
+		this.reason = reason;
 	}
+
+
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -65,4 +71,17 @@ public class Banned implements java.io.Serializable {
 		this.user = user;
 	}
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	 @JsonIgnore @JoinColumn(name = "reason_id", nullable = false)
+	public Reason getReason() {
+		return reason;
+	}
+
+
+	public void setReason(Reason reason) {
+		this.reason = reason;
+	}
+	
+	
+	
 }

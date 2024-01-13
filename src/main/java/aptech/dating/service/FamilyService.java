@@ -3,6 +3,7 @@ package aptech.dating.service;
 import java.util.List;
 import java.util.Optional;
 
+import aptech.dating.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,10 @@ public class FamilyService {
 
     public Optional<Family> getFamilyById(int id) {
         return familyRepository.findById(id);
+    }
+
+    public Family getFamilyByUserId(User user) {
+        return familyRepository.findFamilyByUsers(user);
     }
 
     public Family saveFamily(Family family) {

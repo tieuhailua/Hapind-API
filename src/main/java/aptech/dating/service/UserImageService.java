@@ -31,7 +31,11 @@ public class UserImageService {
     public Optional<UserImage> getUserImageById(int id) {
         return userImageRepository.findById(id);
     }
-
+    
+    public List<String> getImagePathsByUserId(Integer userId) {
+        return userImageRepository.findImagePathsByUserId(userId);
+    }
+    
     public UserImage saveUserImage(UserImage userImage) {
         return userImageRepository.save(userImage);
     }

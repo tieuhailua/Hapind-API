@@ -9,6 +9,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -180,7 +181,7 @@ public class User implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
 	 @JsonIgnore @JoinColumn(name = "drinking_id")
 	public Drinking getDrinking() {
 		return this.drinking;
@@ -190,7 +191,7 @@ public class User implements java.io.Serializable {
 		this.drinking = drinking;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	 @JsonIgnore @JoinColumn(name = "family_id")
 	public Family getFamily() {
 		return this.family;
@@ -200,7 +201,7 @@ public class User implements java.io.Serializable {
 		this.family = family;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	 @JsonIgnore @JoinColumn(name = "habit_id")
 	public Habit getHabit() {
 		return this.habit;
@@ -210,7 +211,7 @@ public class User implements java.io.Serializable {
 		this.habit = habit;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	 @JsonIgnore @JoinColumn(name = "literacy_id")
 	public Literacy getLiteracy() {
 		return this.literacy;
@@ -220,7 +221,7 @@ public class User implements java.io.Serializable {
 		this.literacy = literacy;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	 @JsonIgnore @JoinColumn(name = "purpose_id", nullable = false)
 	public Purpose getPurpose() {
 		return this.purpose;
@@ -230,7 +231,7 @@ public class User implements java.io.Serializable {
 		this.purpose = purpose;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	 @JsonIgnore @JoinColumn(name = "smoking_id")
 	public Smoking getSmoking() {
 		return this.smoking;
@@ -240,7 +241,7 @@ public class User implements java.io.Serializable {
 		this.smoking = smoking;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	 @JsonIgnore @JoinColumn(name = "status_id", nullable = false)
 	public Status getStatus() {
 		return this.status;
@@ -250,7 +251,7 @@ public class User implements java.io.Serializable {
 		this.status = status;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	 @JsonIgnore @JoinColumn(name = "work_id")
 	public Work getWork() {
 		return this.work;

@@ -20,7 +20,5 @@ public class HapindApplication {
     public ModelMapper getModelMapper() {
 	return new ModelMapper();
     }
-    
-    
-
+      
 }

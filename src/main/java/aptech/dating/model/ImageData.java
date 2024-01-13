@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "ImageData")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class ImageData {

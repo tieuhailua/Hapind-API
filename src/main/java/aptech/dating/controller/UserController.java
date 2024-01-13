@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import aptech.dating.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,11 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import aptech.dating.DTO.FamilyDTO;
 import aptech.dating.DTO.UserDTO;
+import aptech.dating.DTO.UserSignUpDTO;
 import aptech.dating.model.Admin;
 import aptech.dating.model.Banned;
 import aptech.dating.model.Family;
 import aptech.dating.model.User;
-import aptech.dating.service.UserService;
 
 @RestController
 @RequestMapping("/api/user")
@@ -35,12 +37,27 @@ public class UserController {
 	private ModelMapper modelMapper;
 	// Declare the service as final to ensure its immutability
 	private final UserService userService;
-
+	private final StatusService statusService;
+	private final DrinkingService drinkingService;
+	private final SmokingService smokingService;
+	private final FamilyService familyService;
+	private final HabitService habitService;
+	private final LiteracyService literacyService;
+	private final PurposeService purposeService;
+	private final WorkService workService;
 	// Use constructor-based dependency injection
 	@Autowired
-	public UserController(UserService userService) {
+	public UserController(UserService userService, StatusService statusService, DrinkingService drinkingService, SmokingService smokingService, FamilyService familyService, HabitService habitService, LiteracyService literacyService, PurposeService purposeService, WorkService workService) {
 		this.userService = userService;
-	}
+		this.statusService = statusService;
+        this.drinkingService = drinkingService;
+        this.smokingService = smokingService;
+        this.familyService = familyService;
+        this.habitService = habitService;
+        this.literacyService = literacyService;
+        this.purposeService = purposeService;
+        this.workService = workService;
+    }
 
 	@GetMapping
 	@PreAuthorize("hasAuthority('admin')")
@@ -51,10 +68,17 @@ public class UserController {
 				.collect(Collectors.toList());
 
 		return ResponseEntity.ok(userDTO);
+	}	
+	
+	@PostMapping("/signup")
+	public void signUp(@RequestBody @Validated UserSignUpDTO userSignUpDTO) {
+	    	//Optional<User> user = userService.getUserById(userSignUpDTO.getId());
+		User user = modelMapper.map(userSignUpDTO, User.class);
+		userService.signUpUser(userSignUpDTO.getEmail(),userSignUpDTO.getPassword());
+		ResponseEntity.ok();
 	}
 
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
 		Optional<User> user = userService.getUserById(id);
 
@@ -69,25 +93,30 @@ public class UserController {
 		User user = modelMapper.map(userDTO, User.class);
 		return ResponseEntity.ok(userService.saveUser(user));
 	}
-
+	@Transactional
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAuthority('admin')")
-	public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody @Validated UserDTO userDTO) {
+	public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody @Validated UserDTO userDTO) {
 		Optional<User> user = userService.getUserById(id);
-
-	    if (user.isPresent()) {
-	    	User updateUser = user.get();
-
-	        // Update the existingAdmin with the data from adminDTO
-	        modelMapper.map(userDTO, updateUser);
-
-	        // Save the updated admin
-	        return ResponseEntity.ok(userService.saveUser(updateUser));
-	    } else {
-	        // If the admin with the given ID is not found, return not found response
-	        return ResponseEntity.notFound().build();
-	    }
+		if (user.isPresent()) {
+			//User updateUser = user.get();
+//			updateUser.setWork(workService.getWorkByUserId(updateUser));
+//			updateUser.setPurpose(purposeService.getPurposeByUserId(updateUser));
+			//updateUser.setDrinking(updateUser.getDrinking());
+//			updateUser.setSmoking(smokingService.getSmokingByUserId(updateUser));
+//			updateUser.setFamily(familyService.getFamilyByUserId(updateUser));
+//			updateUser.setLiteracy(literacyService.getLiteracyByUserId(updateUser));
+//			updateUser.setHabit(habitService.getHabitByUserId(updateUser));
+			modelMapper.map(userDTO, user);
+			userService.banUser(statusService.getStatusByName("Banned").get().getId(), id);
+			return ResponseEntity.ok(user.get());
+		} else {
+			// If the admin with the given ID is not found, return not found response
+			return ResponseEntity.notFound().build();
+		}
 	}
+
+
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasAuthority('admin')")

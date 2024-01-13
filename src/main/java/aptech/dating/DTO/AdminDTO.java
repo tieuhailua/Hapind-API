@@ -18,7 +18,7 @@ public class AdminDTO {
     private String username;
 
     @NotEmpty(message = "Password can't be blank")
-    @Size(min = 8, max = 32, message = "Password must be between 8 and 32 characters")
+    @Size(min = 8, max = 255, message = "Password must be between 8 and 32 characters")
     private String password;
 
     private Set<Banned> banneds = new HashSet<Banned>(0);
@@ -27,7 +27,7 @@ public class AdminDTO {
     private String role;
     public AdminDTO(
 	    @NotEmpty(message = "Username can't be blank") @Size(min = 6, max = 50, message = "Username must be between 6 and 50 characters") String username,
-	    @NotEmpty(message = "Password can't be blank") @Size(min = 8, max = 32, message = "Password must be between 8 and 32 characters") String password,
+	    @NotEmpty(message = "Password can't be blank") @Size(min = 8, max = 255, message = "Password must be between 8 and 32 characters") String password,
 	    Set<Banned> banneds, Set<Blog> blogs, String role) {
 	super();
 	this.username = username;

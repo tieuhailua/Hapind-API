@@ -144,6 +144,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		.authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
 				.requestMatchers("/api/sendMail").permitAll()
+			.requestMatchers("/api/mobile/**").permitAll()
 			.requestMatchers("/api/mobile/signUp").permitAll()
 			.requestMatchers("/api/mobile/getUserImageById").permitAll()
 			.requestMatchers("/api/mobile/getRandomUser").permitAll()

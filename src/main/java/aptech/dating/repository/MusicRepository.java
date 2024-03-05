@@ -6,4 +6,5 @@ import aptech.dating.model.Music;
 
 
 public interface MusicRepository extends JpaRepository<Music, Integer> {
+    Music findMusicByName(String name);
 }

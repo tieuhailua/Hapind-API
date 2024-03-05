@@ -8,4 +8,5 @@ import aptech.dating.model.Habit;
 
 public interface HabitRepository extends JpaRepository<Habit, Integer> {
     public Habit findHabitByUsers(User user);
+    public Habit findHabitByName(String name);
 }

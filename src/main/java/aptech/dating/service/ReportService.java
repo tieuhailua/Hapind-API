@@ -27,7 +27,11 @@ public class ReportService {
     public List<Report> getAllReports() {
         return reportRepository.findAll();
     }
-
+    
+    public List<Report> getByUserByReporterId_Id(int id) {
+        return reportRepository.findByUserByReporterId_Id(id);
+    }
+    
     public Optional<Report> getReportById(int id) {
         return reportRepository.findById(id);
     }

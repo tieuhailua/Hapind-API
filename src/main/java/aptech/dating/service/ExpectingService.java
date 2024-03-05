@@ -31,7 +31,11 @@ public class ExpectingService {
     public Optional<Expecting> getExpectingById(int id) {
         return expectingRepository.findById(id);
     }
-
+    
+    public Expecting getExpectingByName(String name) {
+		return expectingRepository.findExpectingByName(name);
+	}
+    
     public Expecting saveExpecting(Expecting expecting) {
         return expectingRepository.save(expecting);
     }

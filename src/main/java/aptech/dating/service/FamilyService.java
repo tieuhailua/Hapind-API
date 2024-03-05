@@ -12,6 +12,7 @@ import aptech.dating.DTO.BannedDTO;
 import aptech.dating.DTO.FamilyDTO;
 import aptech.dating.model.Banned;
 import aptech.dating.model.Family;
+import aptech.dating.model.Literacy;
 import aptech.dating.repository.FamilyRepository;
 
 @Service
@@ -34,7 +35,11 @@ public class FamilyService {
     public Optional<Family> getFamilyById(int id) {
         return familyRepository.findById(id);
     }
-
+    
+    public Family getFamilyByName(String name) {
+		return familyRepository.findFamilyByName(name);
+	}
+    
     public Family getFamilyByUserId(User user) {
         return familyRepository.findFamilyByUsers(user);
     }

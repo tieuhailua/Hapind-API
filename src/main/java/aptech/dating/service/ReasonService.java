@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.ReasonDTO;
+import aptech.dating.model.Pet;
 import aptech.dating.model.Reason;
 import aptech.dating.repository.ReasonRepository;
 
@@ -23,7 +24,11 @@ public class ReasonService {
     public ReasonService(ReasonRepository reasonRepository) {
         this.reasonRepository = reasonRepository;
     }
-
+    
+    public Reason getReasonByName(String name) {
+		return reasonRepository.findReasonByName(name);
+	}
+    
     public List<Reason> getAllReasons() {
         return reasonRepository.findAll();
     }

@@ -29,6 +29,10 @@ public class BlockService {
     public List<Block> getAllBlocks() {
         return blockRepository.findAll();
     }
+    
+    public List<Block> getByUserByUseId_Id(int id) {
+        return blockRepository.findByUserByUseId_Id(id);
+    }
 
     public Optional<Block> getBlockById(int id) {
         return blockRepository.findById(id);

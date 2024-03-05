@@ -18,44 +18,52 @@ import aptech.dating.repository.AdminRepository;
 @Service
 public class AdminService implements UserDetailsService {
 
-    @Autowired
-    private ModelMapper modelMapper;
-    // Declare the repository as final to ensure its immutability
-    private final AdminRepository adminRepository;
+	@Autowired
+	private ModelMapper modelMapper;
+	// Declare the repository as final to ensure its immutability
+	private final AdminRepository adminRepository;
 
-    // Use constructor-based dependency injection
-    @Autowired
-    public AdminService(AdminRepository adminRepository) {
-	this.adminRepository = adminRepository;
-    }
+	// Use constructor-based dependency injection
+	@Autowired
+	public AdminService(AdminRepository adminRepository) {
+		this.adminRepository = adminRepository;
+	}
 
-    public List<Admin> getAllAdmins() {
-	return adminRepository.findAll();
-    }
+	public List<Admin> getAllAdmins() {
+		return adminRepository.findAll();
+	}
+	
+	public List<Admin> getByRoleMod() {
+		return adminRepository.findByRoleMod();
+	}
 
-    public Optional<Admin> getAdminById(int id) {
-	return adminRepository.findById(id);
-    }
+	public Optional<Admin> getAdminById(int id) {
+		return adminRepository.findById(id);
+	}
 
-    public Admin saveAdmin(Admin admin) {
-	return adminRepository.save(admin);
-    }
+	public Optional<Admin> getAdminByUsername(String username) {
+		return adminRepository.findByUsername(username);
+	}
 
-    public void deleteAdmin(int id) {
-	adminRepository.deleteById(id);
-    }
+	public Admin saveAdmin(Admin admin) {
+		return adminRepository.save(admin);
+	}
 
-    public AdminDTO getAdmin(int id) {
-	Admin admin = this.adminRepository.findById(id).get();
-	AdminDTO adminDto = this.modelMapper.map(admin, AdminDTO.class);
-	return adminDto;
-    }
+	public void deleteAdmin(int id) {
+		adminRepository.deleteById(id);
+	}
 
-    @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-	Admin admin = adminRepository.findByUsername(username)
-		.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+	public AdminDTO getAdmin(int id) {
+		Admin admin = this.adminRepository.findById(id).get();
+		AdminDTO adminDto = this.modelMapper.map(admin, AdminDTO.class);
+		return adminDto;
+	}
 
-	return AdminDetailsImpl.build(admin);
-    }
+	@Transactional
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Admin admin = adminRepository.findByUsername(username)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+
+		return AdminDetailsImpl.build(admin);
+	}
 }

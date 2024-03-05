@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.UserExpectingDTO;
+import aptech.dating.model.User;
+import aptech.dating.model.UserExpecting;
 import aptech.dating.model.UserExpecting;
 import aptech.dating.model.UserMusic;
 import aptech.dating.repository.UserExpectingRepository;
@@ -36,6 +38,14 @@ public class UserExpectingService {
     public List<UserExpecting> getUserExpectingsByUserId(int userId) {
         return userExpectingRepository.findAllByUserId(userId);
     }
+    
+    public List<UserExpecting> getChooseUserExercisesByUserId(int userId) {
+        return userExpectingRepository.findAllByUserIdAndChooseIsTrue(userId);
+    }
+    
+    public UserExpecting getUserExerciseByUserAndExerciseName(User user, String expectingName) {
+		return userExpectingRepository.findUserExpectingByUserAndExpecting_Name(user,expectingName);
+	}
 
     public UserExpecting saveUserExpecting(UserExpecting userExpecting) {
         return userExpectingRepository.save(userExpecting);

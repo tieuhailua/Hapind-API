@@ -6,4 +6,5 @@ import aptech.dating.model.Expecting;
 
 
 public interface ExpectingRepository extends JpaRepository<Expecting, Integer> {
+	Expecting findExpectingByName(String name);
 }

@@ -32,7 +32,11 @@ public class HabitService {
     public Optional<Habit> getHabitById(int id) {
         return habitRepository.findById(id);
     }
-
+    
+    public Habit getHabitByName(String name) {
+		return habitRepository.findHabitByName(name);
+	}
+    
     public Habit getHabitByUserId(User user) {
         return habitRepository.findHabitByUsers(user);
     }

@@ -27,6 +27,10 @@ public class BlogService {
     public List<Blog> getAllBlogs() {
         return blogRepository.findAll();
     }
+    
+    public List<Blog> getAllBlogsPublish() {
+        return blogRepository.findByStatusPublished();
+    }
 
     public Optional<Blog> getBlogById(int id) {
         return blogRepository.findById(id);

@@ -6,4 +6,5 @@ import aptech.dating.model.Pet;
 
 
 public interface PetRepository extends JpaRepository<Pet, Integer> {
+	Pet findPetByName(String name);
 }

@@ -35,7 +35,13 @@ public class Admin implements java.io.Serializable {
 		this.username = username;
 		this.password = password;
 	}
-
+	
+	public Admin(String username, String password,String role) {
+		this.username = username;
+		this.password = password;
+		this.role=role;
+	}
+	
 	public Admin(String username, String password, Set<Banned> banneds, Set<Blog> blogs, String role) {
 		this.username = username;
 		this.password = password;

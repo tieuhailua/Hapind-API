@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.SmokingDTO;
+import aptech.dating.model.Drinking;
 import aptech.dating.model.Smoking;
 import aptech.dating.repository.SmokingRepository;
 
@@ -32,7 +33,11 @@ public class SmokingService {
     public Optional<Smoking> getSmokingById(int id) {
         return smokingRepository.findById(id);
     }
-
+    
+    public Smoking getDrinkingByName(String name) {
+		return smokingRepository.findSmokingByName(name);
+	}
+    
     public Smoking getSmokingByUserId(User user) {
         return smokingRepository.findSmokingsByUsers(user);
     }

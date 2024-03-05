@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.UserExerciseDTO;
+import aptech.dating.model.User;
 import aptech.dating.model.UserExercise;
 import aptech.dating.model.UserMusic;
 import aptech.dating.repository.UserExerciseRepository;
@@ -40,6 +41,14 @@ public class UserExerciseService {
     public UserExercise saveUserExercise(UserExercise userExercise) {
         return userExerciseRepository.save(userExercise);
     }
+    
+    public List<UserExercise> getChooseUserExercisesByUserId(int userId) {
+        return userExerciseRepository.findAllByUserIdAndChooseIsTrue(userId);
+    }
+    
+    public UserExercise getUserExerciseByUserAndExerciseName(User user, String exerciseName) {
+		return userExerciseRepository.findUserExerciseByUserAndExercise_Name(user,exerciseName);
+	}
 
     public void deleteUserExercise(int id) {
         userExerciseRepository.deleteById(id);

@@ -6,4 +6,5 @@ import aptech.dating.model.Singer;
 
 
 public interface SingerRepository extends JpaRepository<Singer, Integer> {
+	Singer findSingerByName(String name);
 }

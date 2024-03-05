@@ -32,6 +32,10 @@ public class LiteracyService {
     public Optional<Literacy> getLiteracyById(int id) {
         return literacyRepository.findById(id);
     }
+    
+    public Literacy getLiteracyByName(String name) {
+		return literacyRepository.findLiteracyByName(name);
+	}
 
     public Literacy getLiteracyByUserId(User user) {
         return literacyRepository.findLiteracyByUsers(user);

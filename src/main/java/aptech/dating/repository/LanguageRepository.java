@@ -6,4 +6,5 @@ import aptech.dating.model.Language;
 
 
 public interface LanguageRepository extends JpaRepository<Language, Integer> {
+	Language findLanguageByName(String name);
 }

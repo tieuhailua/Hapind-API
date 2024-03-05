@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -28,7 +29,6 @@ import jakarta.persistence.TemporalType;
 @Entity
 @Table(name="\"user\"")
 public class User implements java.io.Serializable {
-
 	private Integer id;
 	private Drinking drinking;
 	private Family family;
@@ -221,7 +221,7 @@ public class User implements java.io.Serializable {
 		this.literacy = literacy;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
 	 @JsonIgnore @JoinColumn(name = "purpose_id", nullable = false)
 	public Purpose getPurpose() {
 		return this.purpose;
@@ -241,7 +241,7 @@ public class User implements java.io.Serializable {
 		this.smoking = smoking;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
 	 @JsonIgnore @JoinColumn(name = "status_id", nullable = false)
 	public Status getStatus() {
 		return this.status;
@@ -390,6 +390,7 @@ public class User implements java.io.Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "create_time", nullable = false, length = 23)
+    //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
 	public Date getCreateTime() {
 		return this.createTime;
 	}

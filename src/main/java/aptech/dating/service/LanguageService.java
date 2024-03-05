@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.LanguageDTO;
+import aptech.dating.model.Expecting;
 import aptech.dating.model.Language;
 import aptech.dating.repository.LanguageRepository;
 
@@ -31,7 +32,11 @@ public class LanguageService {
     public Optional<Language> getLanguageById(int id) {
         return languageRepository.findById(id);
     }
-
+    
+    public Language getLanguageByName(String name) {
+		return languageRepository.findLanguageByName(name);
+	}
+    
     public Language saveLanguage(Language language) {
         return languageRepository.save(language);
     }

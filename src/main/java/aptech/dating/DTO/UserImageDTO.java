@@ -2,11 +2,9 @@ package aptech.dating.DTO;
 
 import aptech.dating.model.User;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 
 public class UserImageDTO {
 	private Integer id;
-	@NotNull(message = "User must be selected")
 	private User user;
 	
 	@NotEmpty(message="Image Path can't be blank")
@@ -17,7 +15,7 @@ public class UserImageDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserImageDTO(@NotNull(message = "User must be selected") User user,
+	public UserImageDTO(User user,
 			@NotEmpty(message = "Image Path can't be blank") String imagePath) {
 		super();
 		this.user = user;

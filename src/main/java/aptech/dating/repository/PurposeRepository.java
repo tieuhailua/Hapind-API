@@ -8,4 +8,5 @@ import aptech.dating.model.Purpose;
 
 public interface PurposeRepository extends JpaRepository<Purpose, Integer> {
     public Purpose findPurposeByUsers(User user);
+    public Purpose findPurposeByName(String name);
 }

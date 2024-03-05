@@ -9,8 +9,11 @@ import aptech.dating.model.Admin;
 import aptech.dating.model.Banned;
 import aptech.dating.model.User;
 
-
 public interface BannedRepository extends JpaRepository<Banned, Integer> {
 	public Optional<Admin> findByAdminId(Integer adminId);
+
 	public Optional<User> findByUserId(Integer userId);
+
+	public Optional<Banned> findByAdminIdAndUserId(Integer adminId, Integer userId);
+
 }

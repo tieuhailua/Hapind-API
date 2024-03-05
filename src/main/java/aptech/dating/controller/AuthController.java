@@ -2,7 +2,12 @@ package aptech.dating.controller;
 
 import jakarta.validation.Valid;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import org.modelmapper.ModelMapper;
@@ -14,17 +19,21 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import aptech.dating.DTO.UserDTO;
+import aptech.dating.model.Admin;
 import aptech.dating.model.Drinking;
 import aptech.dating.model.EmailDetails;
 import aptech.dating.model.User;
@@ -38,6 +47,7 @@ import aptech.dating.repository.UserRepository;
 import aptech.dating.security.admin.JwtUtils;
 import aptech.dating.security.user.UserJwtUtils;
 import aptech.dating.service.AdminDetailsImpl;
+import aptech.dating.service.AdminService;
 import aptech.dating.service.EmailService;
 import aptech.dating.service.UserDetailsImpl;
 import aptech.dating.service.UserService;
@@ -75,6 +85,12 @@ public class AuthController {
 	@Autowired
 	private EmailService emailService;
 
+	@Autowired
+	private AdminService adminService;
+
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 	private ModelMapper modelMapper;
 
 	@PostMapping("/signin")
@@ -96,19 +112,71 @@ public class AuthController {
 				adminRepository.findByUsername(loginRequest.getUsername()).get().getRole()));
 	}
 
+	@PutMapping("/changePassword")
+	public ResponseEntity<?> changePassword(@Valid @RequestBody LoginRequest loginRequest,
+			@RequestParam String newPassword) {
+		Admin admin = adminRepository.findByUsername(loginRequest.getUsername()).get();
+
+		if (!bCryptPasswordEncoder.matches(loginRequest.getPassword(), admin.getPassword())) {
+			return ResponseEntity.notFound().build();
+		}
+
+		String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
+		admin.setPassword(encodedPassword);
+		adminRepository.save(admin);
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/checkOldPassword/{id}")
+	public ResponseEntity<?> checkOldPassword(@PathVariable int id, @RequestParam String oldPassword) {
+		User user = userRepository.findById(id).get();
+
+		if (!bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
+			return ResponseEntity.badRequest().body("Old password is invalid!");
+		}
+
+		return ResponseEntity.ok().build();
+	}
+
 	@PostMapping("/signUp")
 	public ResponseEntity<User> createUser(@RequestBody @Validated UserDTO userDTO) {
 		User user = modelMapper.map(userDTO, User.class);
 		return ResponseEntity.ok(userRepository.save(user));
 	}
 
+	@PostMapping("/createMod/{username}")
+	public ResponseEntity<Admin> createUser(@PathVariable String username) {
+		Optional<Admin> existingAdminOptional = adminService.getAdminByUsername(username);
+
+		if (existingAdminOptional.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+		String encodedPassword = bCryptPasswordEncoder.encode("Aa@123456");
+		Admin admin = new Admin(username, encodedPassword, "mod");
+		adminRepository.save(admin);
+		return ResponseEntity.ok(adminService.saveAdmin(admin));
+	}
+	
+	@PutMapping("/resetPassword/{modId}")
+	public ResponseEntity<Admin> resetPassword(@PathVariable int modId) {
+		Optional<Admin> existingAdminOptional = adminService.getAdminById(modId);
+
+		if (existingAdminOptional == null) {
+			return ResponseEntity.notFound().build();
+		}
+		String encodedPassword = bCryptPasswordEncoder.encode("Aa@123456");
+		existingAdminOptional.get().setPassword(encodedPassword);
+		
+		return ResponseEntity.ok(adminRepository.save(existingAdminOptional.get()));
+	}
+	
 	@PostMapping("/sendOtp/{email}")
 	public ResponseEntity<String> sendOtp(@PathVariable String email) {
 		Random random = new Random();
 		int otp = random.nextInt(9000) + 1000;
 		EmailDetails emailDetails = new EmailDetails(email, "Your OTP is: " + otp, "Hapind OTP", "");
 		String status = emailService.sendSimpleMail(emailDetails);
-		return ResponseEntity.ok(""+otp);
+		return ResponseEntity.ok("" + otp);
 	}
 
 	@PostMapping("/emailLogin")
@@ -135,6 +203,22 @@ public class AuthController {
 			}
 		} else if (userRepository.findByPhone(username).isPresent()) {
 			return ResponseEntity.badRequest().body("Phone is already taken!");
+		}
+		return ResponseEntity.ok().build();
+	}
+
+	@PutMapping("/checkIsOnline/{id}/{onl}")
+	public ResponseEntity<?> checkIsOnline(@PathVariable int id, @PathVariable int onl) {
+		User user = userRepository.findById(id).get();
+		if (user != null && onl == 1) {
+			user.setOnline(true);
+	        user.setLastLogin(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+			userRepository.save(user);
+		}
+		if (user != null && onl == 0) {
+			user.setOnline(false);
+	        user.setLastLogin(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+			userRepository.save(user);
 		}
 		return ResponseEntity.ok().build();
 	}

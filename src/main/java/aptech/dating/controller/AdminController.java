@@ -12,6 +12,7 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
@@ -43,7 +44,10 @@ public class AdminController {
 
 	@Autowired
 	private ModelMapper modelMapper;
-
+	
+//	@Autowired
+//	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
 	// Use constructor-based dependency injection
 	@Autowired
 	public AdminController(AdminService adminService) {
@@ -53,7 +57,7 @@ public class AdminController {
 	@GetMapping
 	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<AdminDTO>> getAllAdmins() {
-		List<Admin> admin = adminService.getAllAdmins();
+		List<Admin> admin = adminService.getByRoleMod();
 
 		List<AdminDTO> adminDTO = admin.stream().map(element -> modelMapper.map(element, AdminDTO.class))
 				.collect(Collectors.toList());
@@ -77,7 +81,21 @@ public class AdminController {
 		Admin admin = modelMapper.map(adminDTO, Admin.class);
 		return ResponseEntity.ok(adminService.saveAdmin(admin));
 	}
-
+	
+//	@PutMapping("/resetPassword/{modId}")
+//	@PreAuthorize("hasAuthority('admin')")
+//	public ResponseEntity<Admin> resetPassword(@PathVariable int modId) {
+//		Optional<Admin> existingAdminOptional = adminService.getAdminById(modId);
+//
+//		if (existingAdminOptional == null) {
+//			return ResponseEntity.notFound().build();
+//		}
+//		String encodedPassword = bCryptPasswordEncoder.encode("Aa@123456");
+//		existingAdminOptional.get().setPassword(encodedPassword);
+//		
+//		return ResponseEntity.ok(adminService.saveAdmin(existingAdminOptional.get()));
+//	}
+	
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<Admin> updateAdmin(@PathVariable Integer id, @RequestBody @Validated AdminDTO adminDTO) {

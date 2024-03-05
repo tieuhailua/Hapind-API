@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.PetDTO;
+import aptech.dating.model.Expecting;
 import aptech.dating.model.Pet;
 import aptech.dating.repository.PetRepository;
 
@@ -31,7 +32,11 @@ public class PetService {
     public Optional<Pet> getPetById(int id) {
         return petRepository.findById(id);
     }
-
+    
+    public Pet getPetByName(String name) {
+		return petRepository.findPetByName(name);
+	}
+    
     public Pet savePet(Pet pet) {
         return petRepository.save(pet);
     }

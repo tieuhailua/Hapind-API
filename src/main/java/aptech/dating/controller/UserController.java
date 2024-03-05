@@ -45,9 +45,10 @@ public class UserController {
 	private final LiteracyService literacyService;
 	private final PurposeService purposeService;
 	private final WorkService workService;
+	private final BannedService bannedService;
 	// Use constructor-based dependency injection
 	@Autowired
-	public UserController(UserService userService, StatusService statusService, DrinkingService drinkingService, SmokingService smokingService, FamilyService familyService, HabitService habitService, LiteracyService literacyService, PurposeService purposeService, WorkService workService) {
+	public UserController(BannedService bannedService,UserService userService, StatusService statusService, DrinkingService drinkingService, SmokingService smokingService, FamilyService familyService, HabitService habitService, LiteracyService literacyService, PurposeService purposeService, WorkService workService) {
 		this.userService = userService;
 		this.statusService = statusService;
         this.drinkingService = drinkingService;
@@ -57,6 +58,7 @@ public class UserController {
         this.literacyService = literacyService;
         this.purposeService = purposeService;
         this.workService = workService;
+        this.bannedService = bannedService;
     }
 
 	@GetMapping
@@ -93,6 +95,7 @@ public class UserController {
 		User user = modelMapper.map(userDTO, User.class);
 		return ResponseEntity.ok(userService.saveUser(user));
 	}
+	
 	@Transactional
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAuthority('admin')")
@@ -109,6 +112,7 @@ public class UserController {
 //			updateUser.setHabit(habitService.getHabitByUserId(updateUser));
 			modelMapper.map(userDTO, user);
 			userService.banUser(statusService.getStatusByName("Banned").get().getId(), id);
+			//bannedService.saveBanned(new Banned());
 			return ResponseEntity.ok(user.get());
 		} else {
 			// If the admin with the given ID is not found, return not found response

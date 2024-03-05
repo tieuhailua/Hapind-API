@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.DrinkingDTO;
 import aptech.dating.model.Drinking;
+import aptech.dating.model.Purpose;
 import aptech.dating.repository.DrinkingRepository;
 
 @Service
@@ -32,7 +33,11 @@ public class DrinkingService {
     public Optional<Drinking> getDrinkingById(int id) {
         return drinkingRepository.findById(id);
     }
-
+    
+    public Drinking getDrinkingByName(String name) {
+		return drinkingRepository.findDrinkingByName(name);
+	}
+    
     public Drinking getDrinkingByUserId(User user) {
         return drinkingRepository.findDrinkingByUsers(user);
     }

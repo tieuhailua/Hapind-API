@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.ExerciseDTO;
 import aptech.dating.model.Exercise;
+import aptech.dating.model.Expecting;
 import aptech.dating.repository.ExerciseRepository;
 
 @Service
@@ -31,7 +32,11 @@ public class ExerciseService {
     public Optional<Exercise> getExerciseById(int id) {
         return exerciseRepository.findById(id);
     }
-
+    
+    public Exercise getExerciseByName(String name) {
+		return exerciseRepository.findExerciseByName(name);
+	}
+    
     public Exercise saveExercise(Exercise exercise) {
         return exerciseRepository.save(exercise);
     }

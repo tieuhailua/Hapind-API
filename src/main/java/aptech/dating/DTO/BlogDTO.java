@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
 
 public class BlogDTO {
 	private Integer id;
-	@NotNull(message = "Admin must be selected")
+	//@NotNull(message = "Admin must be selected")
 	private Admin admin;
 	
 	@NotEmpty(message = "Title can't be blank")
@@ -29,7 +29,7 @@ public class BlogDTO {
 	@NotEmpty(message = "Status can't be blank")
 	private String status;
 	
-	@NotNull(message = "Blog Image date must be selected")
+	//@NotNull(message = "Blog Image date must be selected")
 	private Set<BlogImage> blogImages = new HashSet<BlogImage>(0);
 
 	public BlogDTO() {
@@ -37,13 +37,13 @@ public class BlogDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BlogDTO(@NotNull(message = "Admin must be selected") Admin admin,
+	public BlogDTO(Admin admin,
 			@NotEmpty(message = "Title can't be blank") String title,
 			@NotEmpty(message = "Brief can't be blank") String brief,
 			@NotEmpty(message = "Content can't be blank") String content,
 			@NotNull(message = "Publish date must be selected") Date publishDate,
 			@NotEmpty(message = "Status can't be blank") String status,
-			@NotNull(message = "Blog Image date must be selected") Set<BlogImage> blogImages) {
+			Set<BlogImage> blogImages) {
 		super();
 		this.admin = admin;
 		this.title = title;

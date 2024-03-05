@@ -8,4 +8,5 @@ import aptech.dating.model.Family;
 
 public interface FamilyRepository extends JpaRepository<Family, Integer> {
     public Family findFamilyByUsers(User user);
+    public Family findFamilyByName(String name);
 }

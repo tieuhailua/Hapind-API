@@ -29,7 +29,10 @@ public class ReportDTO {
 	
 	@NotNull(message="Evidence must be selected")
 	private Set<Evidence> evidences = new HashSet<Evidence>(0);
-
+	
+	@NotNull(message="Status must be selected")
+	private String status;
+	
 	public ReportDTO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -39,9 +42,11 @@ public class ReportDTO {
 			@NotNull(message = "User By Reported must be selected") User userByReportedId,
 			@NotNull(message = "User By Reporter must be selected") User userByReporterId,
 			@NotEmpty(message = "Description can't be blank") String description,
+			@NotEmpty(message = "Status can't be blank") String status,
 			@NotNull(message = "Create At must be selected") Date createdAt,
 			@NotNull(message = "Evidence must be selected") Set<Evidence> evidences) {
 		super();
+		this.status = status;
 		this.reason = reason;
 		this.userByReportedId = userByReportedId;
 		this.userByReporterId = userByReporterId;
@@ -56,6 +61,14 @@ public class ReportDTO {
 
 	public void setReason(Reason reason) {
 		this.reason = reason;
+	}
+		
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public User getUserByReportedId() {

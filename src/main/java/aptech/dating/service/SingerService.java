@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.SingerDTO;
+import aptech.dating.model.Expecting;
 import aptech.dating.model.Singer;
 import aptech.dating.repository.SingerRepository;
 
@@ -31,7 +32,11 @@ public class SingerService {
     public Optional<Singer> getSingerById(int id) {
         return singerRepository.findById(id);
     }
-
+    
+    public Singer getSingerByName(String name) {
+		return singerRepository.findSingerByName(name);
+	}
+    
     public Singer saveSinger(Singer singer) {
         return singerRepository.save(singer);
     }

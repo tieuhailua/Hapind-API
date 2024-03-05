@@ -37,7 +37,6 @@ public class UserMusic implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-
 	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;
@@ -48,7 +47,8 @@ public class UserMusic implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	 @JsonIgnore @JoinColumn(name = "music_id", nullable = false)
+	 @JsonIgnore 
+	 @JoinColumn(name = "music_id", nullable = false)
 	public Music getMusic() {
 		return this.music;
 	}

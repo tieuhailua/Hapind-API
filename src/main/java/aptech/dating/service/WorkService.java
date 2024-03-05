@@ -34,7 +34,11 @@ public class WorkService {
     public Optional<Work> getWorkById(int id) {
         return workRepository.findById(id);
     }
-
+    
+    public Work getWorkByName(String name) {
+		return workRepository.findWorkByName(name);
+	}
+    
     public Work getWorkByUserId(User user) {
         return workRepository.findWorkByUsers(user);
     }

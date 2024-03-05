@@ -6,4 +6,5 @@ import aptech.dating.model.Exercise;
 
 
 public interface ExerciseRepository extends JpaRepository<Exercise, Integer> {
+	Exercise findExerciseByName(String name);
 }

@@ -49,10 +49,34 @@ public class UserService implements UserDetailsService {
 		return userRepository.save(user);
 	}
 
-	public User getRandomUser() {
-		return userRepository.findRandomUser();
+	public User getRandomUser(Integer loginUserId, int minAge, int maxAge, int maxDistance) {
+		return userRepository.findRandomUser(loginUserId, minAge, maxAge, maxDistance);
+	}
+	
+	public User getRandomUserForCensorship(String status) {
+		return userRepository.findRandomUserByStatusName(status);
 	}
 
+	public User getRandomPurposeUser(Integer loginUserId, int minAge, int maxAge, int maxDistance, String name) {
+		return userRepository.findRandomUserByPurposeName(loginUserId, minAge, maxAge,maxDistance, name);
+	}
+
+	public User getRandomOnlineUser(Integer loginUserId, int minAge, int maxAge, int maxDistance, Boolean online) {
+		return userRepository.findRandomUserByOnline(loginUserId, minAge, maxAge,maxDistance, online);
+	}
+
+	public User getRandomUserPet(Integer loginUserId, int minAge, int maxAge, int maxDistance) {
+		return userRepository.findRandomUserWithUserPets(loginUserId, minAge, maxAge,maxDistance);
+	}
+	
+	public User getRandomUserExercise(Integer loginUserId, int minAge, int maxAge, int maxDistance) {
+		return userRepository.findRandomUserWithUserExercises(loginUserId, minAge, maxAge,maxDistance);
+	}
+	
+	public User getRandomUserMusic(Integer loginUserId, int minAge, int maxAge, int maxDistance) {
+		return userRepository.findRandomUserWithUserMusics(loginUserId, minAge, maxAge,maxDistance);
+	}
+	
 	public void signUpUser(@Param("email") String email, @Param("password") String password) {
 		userRepository.signUp(email, password);
 	}
@@ -69,6 +93,11 @@ public class UserService implements UserDetailsService {
 		User user = this.userRepository.findById(id).get();
 		UserDTO userDto = this.modelMapper.map(user, UserDTO.class);
 		return userDto;
+	}
+
+	public User getCurrentUser(int id) {
+		User user = this.userRepository.findById(id).get();
+		return user;
 	}
 
 	@Override

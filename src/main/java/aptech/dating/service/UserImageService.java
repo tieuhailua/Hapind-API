@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import aptech.dating.DTO.UserImageDTO;
 import aptech.dating.model.UserImage;
 import aptech.dating.repository.UserImageRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserImageService {
@@ -27,12 +28,34 @@ public class UserImageService {
     public List<UserImage> getAllUserImages() {
         return userImageRepository.findAll();
     }
+    
+    @Transactional
+    public UserImage addOrUpdateUserImage(UserImage userImage) {
+        UserImage existingImage = userImageRepository.findByUserAndId(userImage.getUser(), userImage.getId());
 
+        if (existingImage != null) {
+            // Update existing image
+            existingImage.setImagePath(userImage.getImagePath());
+        } else {
+            // Check if the user has fewer than six images
+            long imageCount = userImageRepository.countByUser(userImage.getUser());
+
+            if (imageCount < 6) {
+                // Add a new image
+                userImageRepository.save(userImage);
+            } else {
+                // User already has six images, update at the specified index
+                userImageRepository.updateImagePath(userImage.getUser(), userImage.getId(), userImage.getImagePath());
+            }
+        }
+		return existingImage;
+    }
+    
     public Optional<UserImage> getUserImageById(int id) {
         return userImageRepository.findById(id);
     }
     
-    public List<String> getImagePathsByUserId(Integer userId) {
+    public List<UserImage> getImagePathsByUserId(Integer userId) {
         return userImageRepository.findImagePathsByUserId(userId);
     }
     

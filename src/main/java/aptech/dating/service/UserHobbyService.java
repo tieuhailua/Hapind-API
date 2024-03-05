@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.UserHobbyDTO;
+import aptech.dating.model.User;
 import aptech.dating.model.UserHobby;
 import aptech.dating.model.UserMusic;
 import aptech.dating.repository.UserHobbyRepository;
@@ -36,7 +37,15 @@ public class UserHobbyService {
     public Optional<UserHobby> getUserHobbyById(int id) {
         return userHobbyRepository.findById(id);
     }
-
+    
+    public List<UserHobby> getChooseUserHobbysByUserId(int userId) {
+        return userHobbyRepository.findAllByUserIdAndChooseIsTrue(userId);
+    }
+    
+    public UserHobby getUserHobbyByUserAndHobbyName(User user, String hobbyName) {
+		return userHobbyRepository.findUserHobbyByUserAndHobby_Name(user,hobbyName);
+	}
+    
     public UserHobby saveUserHobby(UserHobby userHobby) {
         return userHobbyRepository.save(userHobby);
     }

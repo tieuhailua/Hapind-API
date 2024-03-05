@@ -38,6 +38,10 @@ public class PurposeService {
 	public Purpose getPurposeByUserId(User user) {
 		return purposeRepository.findPurposeByUsers(user);
 	}
+	
+	public Purpose getPurposeByName(String name) {
+		return purposeRepository.findPurposeByName(name);
+	}
 
 	public Purpose savePurpose(Purpose purpose) {
 		return purposeRepository.save(purpose);

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.HobbyDTO;
+import aptech.dating.model.Expecting;
 import aptech.dating.model.Hobby;
 import aptech.dating.repository.HobbyRepository;
 
@@ -31,7 +32,11 @@ public class HobbyService {
     public Optional<Hobby> getHobbyById(int id) {
         return hobbyRepository.findById(id);
     }
-
+    
+    public Hobby getHobbyByName(String name) {
+		return hobbyRepository.findHobbyByName(name);
+	}
+    
     public Hobby saveHobby(Hobby hobby) {
         return hobbyRepository.save(hobby);
     }

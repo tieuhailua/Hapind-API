@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.MusicDTO;
+import aptech.dating.model.Drinking;
 import aptech.dating.model.Music;
 import aptech.dating.repository.MusicRepository;
 
@@ -31,7 +32,11 @@ public class MusicService {
     public Optional<Music> getMusicById(int id) {
         return musicRepository.findById(id);
     }
-
+    
+    public Music getMusicByName(String name) {
+		return musicRepository.findMusicByName(name);
+	}
+    
     public Music saveMusic(Music music) {
         return musicRepository.save(music);
     }

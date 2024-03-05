@@ -12,13 +12,13 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @SpringBootApplication
 public class HapindApplication {
 
-    public static void main(String[] args) {
-	SpringApplication.run(HapindApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(HapindApplication.class, args);
+	}
 
-    @Bean
-    public ModelMapper getModelMapper() {
-	return new ModelMapper();
-    }
-      
+	@Bean
+	public ModelMapper getModelMapper() {
+		return new ModelMapper();
+	}
+
 }

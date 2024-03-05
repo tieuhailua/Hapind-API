@@ -34,12 +34,14 @@ public class Report implements java.io.Serializable {
 	private User userByReporterId;
 	private String description;
 	private Date createdAt;
+	private String status;
 	private Set<Evidence> evidences = new HashSet<Evidence>(0);
 
 	public Report() {
 	}
 
-	public Report(Reason reason, User userByReportedId, User userByReporterId, String description, Date createdAt) {
+	public Report(String status, Reason reason, User userByReportedId, User userByReporterId, String description, Date createdAt) {
+		this.status = status;
 		this.reason = reason;
 		this.userByReportedId = userByReportedId;
 		this.userByReporterId = userByReporterId;
@@ -47,8 +49,9 @@ public class Report implements java.io.Serializable {
 		this.createdAt = createdAt;
 	}
 
-	public Report(Reason reason, User userByReportedId, User userByReporterId, String description, Date createdAt,
+	public Report(String status,Reason reason, User userByReportedId, User userByReporterId, String description, Date createdAt,
 			Set<Evidence> evidences) {
+		this.status = status;
 		this.reason = reason;
 		this.userByReportedId = userByReportedId;
 		this.userByReporterId = userByReporterId;
@@ -59,7 +62,6 @@ public class Report implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-
 	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;
@@ -106,6 +108,15 @@ public class Report implements java.io.Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	@Column(name = "status", nullable = false)
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

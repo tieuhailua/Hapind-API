@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.UserLanguageDTO;
+import aptech.dating.model.User;
 import aptech.dating.model.UserLanguage;
 import aptech.dating.model.UserMusic;
+import aptech.dating.model.UserSinger;
 import aptech.dating.repository.UserLanguageRepository;
 
 @Service
@@ -32,7 +34,15 @@ public class UserLanguageService {
     public List<UserLanguage> getUserLanguagesByUserId(int userId) {
         return userLanguageRepository.findAllByUserId(userId);
     }
-
+    
+    public List<UserLanguage> getChooseUserLanguagesByUserId(int userId) {
+        return userLanguageRepository.findAllByUserIdAndChooseIsTrue(userId);
+    }
+    
+    public UserLanguage getUserLanguageByUserAndLanguageName(User user, String languageName) {
+		return userLanguageRepository.findUserLanguageByUserAndLanguage_Name(user,languageName);
+	}
+    
     public Optional<UserLanguage> getUserLanguageById(int id) {
         return userLanguageRepository.findById(id);
     }

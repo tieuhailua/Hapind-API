@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import aptech.dating.model.Banned;
@@ -35,6 +36,7 @@ import jakarta.validation.constraints.Size;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDTO {
 	private Integer id;
+	
 	private Drinking drinking;
 	
 	private Family family;
@@ -58,7 +60,6 @@ public class UserDTO {
 	private String password;
 	
 	private String fullname;
-	
 	private Date dob;
 	
 	private String gender;
@@ -78,9 +79,7 @@ public class UserDTO {
 	private Integer weight;
 	
 	private String zodiac;
-	
 	private Date createTime;
-	
 	private Date lastLogin;
 	
 	private Boolean online = false;

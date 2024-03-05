@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import aptech.dating.DTO.UserMusicDTO;
+import aptech.dating.model.User;
 import aptech.dating.model.UserMusic;
 import aptech.dating.repository.UserMusicRepository;
 
@@ -29,13 +30,17 @@ public class UserMusicService {
     }
     
     public List<UserMusic> getUserMusicsByUserId(int userId) {
-        return userMusicRepository.findAllByUserId(userId);
+        return userMusicRepository.findAllByUserIdAndChooseIsTrue(userId);
     }
     
     public Optional<UserMusic> getUserMusicById(int id) {
         return userMusicRepository.findById(id);
     }
-
+    
+    public UserMusic getUserMusicByUserAndMusicName(User user, String musicName) {
+		return userMusicRepository.findUserMusicByUserAndMusic_Name(user,musicName);
+	}
+    
     public UserMusic saveUserMusic(UserMusic userMusic) {
         return userMusicRepository.save(userMusic);
     }

@@ -29,7 +29,7 @@ public class Matching implements java.io.Serializable {
 	public Matching() {
 	}
 
-	public Matching(User userBySecondUserId, User userByFirstUserId, int statusId) {
+	public Matching(User userByFirstUserId, User userBySecondUserId, int statusId) {
 		this.userBySecondUserId = userBySecondUserId;
 		this.userByFirstUserId = userByFirstUserId;
 		this.statusId = statusId;
